@@ -2,25 +2,87 @@
 {% load static %}
 
 {% block title %}
-{{ book.title }}
+Профиль {{ user.username }}
 {% endblock %}
 
 {% block content %}
-<div class="row book-detail">
+<div class="profile-page">
+<div class="row justify-content-center book-detail">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="row g-4">
 
-    <!-- Правая колонка: информация -->
-    <div class="col-md-8 col-lg-9">
+            <!-- Левая колонка: аватар и кнопка -->
+            <div class="col-12 col-md-4">
+                <div class="profile-avatar-container">
+                    <div class="profile-avatar mb-4">
+                        <i class="bi bi-person"></i>
+                    </div>
 
-        <!-- Название -->
-        <h1 class="book-title">{{ user.username }}</h1>
+                    <!-- Кнопка редактирования -->
+                    {% if user == request.user %}
+                    <div class="profile-edit-btn-container">
+                        <a href="" class="body-btn w-100">
+                            <i class="bi bi-pencil-square me-2"></i>
+                            Редактировать профиль
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
 
-        <li>Регистрация: {{ user.date_joined }}</li>
-        <li>Роль: {% if user.is_staff %}Админ{% else %}Пользователь{% endif %}</li>
+            <!-- Правая колонка: информация и статистика -->
+            <div class="col-12 col-md-8 profile-right">
 
-        <p class="book-author">
-            <a href="">Закладки</a>
-            <a href="">Прочитанные</a>
-        </p>
+                <!-- Имя и роль -->
+                <h1 class="book-title mb-2">{{ user.username }}</h1>
+
+                <div class="profile-badge-container mb-4">
+                    {% if user.is_staff or user.is_superuser %}
+                        <span class="profile-badge admin">Администратор</span>
+                    {% else %}
+                        <span class="profile-badge user">Пользователь</span>
+                    {% endif %}
+                </div>
+
+                <!-- Контактная информация -->
+                <div class="profile-info mb-4">
+                    <div class="profile-info-item">
+                        <i class="bi bi-envelope"></i>
+                        <span>E-mail: {{ user.email }}</span>
+                    </div>
+
+                    {% if user.date_joined %}
+                    <div class="profile-info-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Зарегистрирован: {{ user.date_joined|date:"d.m.Y" }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Квадратные кнопки статистики -->
+                <div class="profile-square-stats">
+                    <div class="square-stat-item">
+                        <a href="{% url "users:saved_books" user.id %}" class="square-stat-link">
+                            <div class="square-stat-number">{{ user.saved_books.count }}</div>
+                            <div class="square-stat-label">
+                                Закладки
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="square-stat-item">
+                        <a href="{% url "users:read_books" user.id %}" class="square-stat-link">
+                            <div class="square-stat-number">{{ user.read_books.count }}</div>
+                            <div class="square-stat-label">
+                                Прочитано
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
+</div>
 </div>
 {% endblock %}

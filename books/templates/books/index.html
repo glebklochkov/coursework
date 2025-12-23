@@ -9,7 +9,7 @@
 <div class="row">
     <!-- Левый блок: карточки книг -->
     <div class="col-lg-9">
-        <div class="row g-4">
+        <div id="books-container" class="row g-4">
             {% for book in book_list %}
             <div class="col-md-6 col-lg-3">
                 <div class="card h-100">
@@ -53,14 +53,18 @@
         </ul>
     </div>
 
-<nav class="list-pages">
-    <ul>
-        {% for p in paginator.page_range %}
-        <li class="page-num">
-            <a href="?page={{ p }}">{{ p }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-</nav>
+{% if page_obj.has_next %}
+<div class="text-center mt-4">
+    <button id="load-more"
+            data-next="{{ page_obj.next_page_number }}"
+            class="body-btn btn">
+        Загрузить ещё
+    </button>
 </div>
+{% endif %}
+</div>
+
+<script src="{% static "js/main.js" %}"></script>
 {% endblock %}
+
+

@@ -6,10 +6,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="row book-detail">
+<div class="row justify-content-center book-detail">
+<div class="col-12 col-md-10 col-lg-10">
+<div class="row g-4 book-detail">
 
     <!-- Левая колонка: обложка -->
-    <div class="col-md-4 col-lg-3">
+    <div class="col-12 col-md-4 col-lg-3">
         <div class="book-poster">
             {% if book.poster %}
                 <img src="{{ book.poster.url }}" alt="{{ book.title }}">
@@ -20,7 +22,7 @@
     </div>
 
     <!-- Правая колонка: информация -->
-    <div class="col-md-8 col-lg-9">
+    <div class="col-12 col-md-8 col-lg-9">
 
         <!-- Название -->
         <h1 class="book-title">{{ book.title }}</h1>
@@ -30,31 +32,42 @@
             <a href="{% url 'books:author' book.author.id %}">{{ book.author.fullname }}</a>
         </p>
 
+        <!-- Год и жанры -->
+        <div class="profile-info mb-4">
+            <div class="profile-info-item">
+                <i class="bi bi-calendar-event"></i>
+                <span>Год выхода: <strong>{{ book.release_year }}</strong></span>
+            </div>
+
+            <div class="profile-info-item">
+                <i class="bi bi-feather"></i>
+                <span>
+                    Жанры:
+                    {% for genre in book.genres.all %}
+                    <a href="{% url 'books:genre' genre.slug %}" class="book-genre">{{ genre.genre }}</a>
+                    {% if not forloop.last %} {% endif %}
+                {% endfor %}
+                </span>
+            </div>
+        </div>
+
         <!-- Кнопки -->
         <div class="book-actions mb-3">
-            <button class="book-action-btn js-toggle">
-                <i class="bi bi-bookmark"></i>
+            <button class="book-action-btn js-toggle {% if is_saved %}active{% endif %}"
+                    data-book="{{ book.id }}"
+                    data-url="{% url 'books:toggle_saved' book.id %}">
+                <i class="bi {% if is_saved %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
                 <span class="text-off">В закладки</span>
                 <span class="text-on">В закладках</span>
             </button>
 
-            <button class="book-action-btn js-toggle">
-                <i class="bi bi-eye"></i>
+            <button class="book-action-btn js-toggle {% if is_read %}active{% endif %}"
+                    data-book="{{ book.id }}"
+                    data-url="{% url 'books:toggle_read' book.id %}">
+                <i class="bi {% if is_read %}bi-eye-fill{% else %}bi-eye{% endif %}"></i>
                 <span class="text-off">Не прочитано</span>
                 <span class="text-on">Прочитано</span>
             </button>
-        </div>
-
-        <!-- Год и жанры -->
-        <div class="book-meta mb-4">
-            <span class="me-3">Год выхода: {{ book.release_year }}</span>
-            <span>
-                Жанры:
-                {% for genre in book.genres.all %}
-                    <a href="{% url 'books:genre' genre.slug %}" class="book-genre">{{ genre.genre }}</a>
-                    {% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </span>
         </div>
 
         <!-- Описание -->
@@ -64,33 +77,9 @@
         </div>
 
     </div>
-</div><script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.js-toggle').forEach(button => {
-        button.addEventListener('click', () => {
-            button.classList.toggle('active');
+</div>
+</div>
+</div>
 
-            const icon = button.querySelector('i');
-
-            // Закладки
-            if (icon.classList.contains('bi-bookmark') || icon.classList.contains('bi-bookmark-fill')) {
-                if (button.classList.contains('active')) {
-                    icon.className = 'bi bi-bookmark-fill';
-                } else {
-                    icon.className = 'bi bi-bookmark';
-                }
-            }
-
-            // Прочитано
-            if (icon.classList.contains('bi-eye') || icon.classList.contains('bi-eye-fill')) {
-                if (button.classList.contains('active')) {
-                    icon.className = 'bi bi-eye-fill';
-                } else {
-                    icon.className = 'bi bi-eye';
-                }
-            }
-        });
-    });
-});
-</script>
+<script src="{% static "js/main.js" %}"></script>
 {% endblock %}
