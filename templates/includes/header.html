@@ -1,0 +1,45 @@
+{% load static %}
+<header>
+    <nav class="navbar navbar-expand-lg" style="background-color: #250f00;">
+    {% csrf_token %}
+        <div class="container">
+
+            <!-- Левая часть -->
+            <a class="navbar-brand d-flex align-items-center text-white" href="{% url 'books:index' %}">
+                <i class="bi bi-house-door" style="font-size: 1.5rem;"></i>
+                <span class="fs-4 fw-bold">Главная</span>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="d-flex">
+                <a href="" class="btn btn-outline-light login-btn">Рекомендации</a>
+            </div>
+            {% endif %}
+
+            <!-- Центр: поиск -->
+            <form class="d-flex mx-auto" role="search" method="get" action="{% url 'books:index' %}">
+                <input class="form-control search-field" type="search" placeholder="Поиск..." aria-label="Search"
+                       name="q">
+            </form>
+
+            <!-- Правая часть -->
+            {% if user.is_authenticated %}
+                <div class="d-flex">
+                    <a href="" class="btn btn-outline-light login-btn">Профиль</a>
+                </div>
+                <div class="d-flex">
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-danger logout-btn">Выйти</button>
+                    </form>
+                </div>
+                {% else %}
+                <div class="d-flex">
+                    <a href="{% url 'login' %}" class="btn btn-outline-light login-btn">Войти</a>
+                </div>
+                <div class="d-flex">
+                    <a href="{% url 'registration' %}" class="btn btn-outline-light login-btn">Регистрация</a>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+</header>

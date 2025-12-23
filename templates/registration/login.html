@@ -1,0 +1,21 @@
+{% extends "../base.html" %}
+{% load form_tags %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <h2>Вход</h2>
+        {{ form.non_field_errors }}
+
+        Имя пользователя: {{ form.username }}
+        Пароль: {{ form.password }}
+
+
+        <button type="submit">Войти</button>
+        Забыли пароль? <a href="{% url 'password_reset' %}" class="book-genre">Изменить пароль</a>
+    </form>
+</div>
+{% endblock %}

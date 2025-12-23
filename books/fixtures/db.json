@@ -1,0 +1,324 @@
+[
+  {
+    "model": "books.genre",
+    "pk": 1,
+    "fields": {
+      "genre": "Фантастика",
+      "slug": "fantasy"
+    }
+  },
+  {
+    "model": "books.genre",
+    "pk": 2,
+    "fields": {
+      "genre": "Фэнтези",
+      "slug": "fantasy-fiction"
+    }
+  },
+  {
+    "model": "books.genre",
+    "pk": 3,
+    "fields": {
+      "genre": "Антиутопия",
+      "slug": "dystopia"
+    }
+  },
+  {
+    "model": "books.genre",
+    "pk": 4,
+    "fields": {
+      "genre": "Роман",
+      "slug": "novel"
+    }
+  },
+  {
+    "model": "books.genre",
+    "pk": 5,
+    "fields": {
+      "genre": "Приключения",
+      "slug": "adventure"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 1,
+    "fields": {
+      "shortname": "Дж. Оруэлл",
+      "fullname": "Джордж Оруэлл"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 2,
+    "fields": {
+      "shortname": "Дж. Р. Р. Толкин",
+      "fullname": "Джон Рональд Руэл Толкин"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 3,
+    "fields": {
+      "shortname": "Р. Брэдбери",
+      "fullname": "Рэй Брэдбери"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 4,
+    "fields": {
+      "shortname": "Ф. Достоевский",
+      "fullname": "Фёдор Михайлович Достоевский"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 5,
+    "fields": {
+      "shortname": "Дж. Роулинг",
+      "fullname": "Джоан Роулинг"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 6,
+    "fields": {
+      "shortname": "А. Пушкин",
+      "fullname": "Александр Сергеевич Пушкин"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 7,
+    "fields": {
+      "shortname": "Ф. Кафка",
+      "fullname": "Франц Кафка"
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 8,
+    "fields": {
+      "shortname": "М. Булгаков",
+      "fullname": "Михаил Афанасьевич Булгаков"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 1,
+    "fields": {
+      "title": "1984",
+      "description": "Антиутопия о тоталитарном будущем.",
+      "release_year": 1949,
+      "is_published": true,
+      "poster": "",
+      "author": 1,
+      "genres": [
+        1,
+        3
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 2,
+    "fields": {
+      "title": "Скотный двор",
+      "description": "Политическая аллегория.",
+      "release_year": 1945,
+      "is_published": true,
+      "poster": "",
+      "author": 1,
+      "genres": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 3,
+    "fields": {
+      "title": "Братство кольца",
+      "description": "Первая часть Властелина колец.",
+      "release_year": 1954,
+      "is_published": true,
+      "poster": "",
+      "author": 2,
+      "genres": [
+        2,
+        5
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 4,
+    "fields": {
+      "title": "Две крепости",
+      "description": "Вторая часть Властелина колец.",
+      "release_year": 1954,
+      "is_published": true,
+      "poster": "",
+      "author": 2,
+      "genres": [
+        2,
+        5
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 5,
+    "fields": {
+      "title": "Возвращение короля",
+      "description": "Финал Властелина колец.",
+      "release_year": 1955,
+      "is_published": true,
+      "poster": "",
+      "author": 2,
+      "genres": [
+        2,
+        5
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 6,
+    "fields": {
+      "title": "451 градус по Фаренгейту",
+      "description": "Мир без книг.",
+      "release_year": 1953,
+      "is_published": true,
+      "poster": "",
+      "author": 3,
+      "genres": [
+        1,
+        3
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 7,
+    "fields": {
+      "title": "Марсианские хроники",
+      "description": "Освоение Марса.",
+      "release_year": 1950,
+      "is_published": true,
+      "poster": "",
+      "author": 3,
+      "genres": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 8,
+    "fields": {
+      "title": "Преступление и наказание",
+      "description": "Психологический роман.",
+      "release_year": 1866,
+      "is_published": true,
+      "poster": "",
+      "author": 4,
+      "genres": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 9,
+    "fields": {
+      "title": "Идиот",
+      "description": "Роман о чистоте и обществе.",
+      "release_year": 1869,
+      "is_published": true,
+      "poster": "",
+      "author": 4,
+      "genres": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 10,
+    "fields": {
+      "title": "Гарри Поттер и философский камень",
+      "description": "Начало истории Гарри Поттера.",
+      "release_year": 1997,
+      "is_published": true,
+      "poster": "",
+      "author": 5,
+      "genres": [
+        2,
+        5
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 11,
+    "fields": {
+      "title": "Гарри Поттер и тайная комната",
+      "description": "Вторая часть серии.",
+      "release_year": 1998,
+      "is_published": true,
+      "poster": "",
+      "author": 5,
+      "genres": [
+        2,
+        5
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 12,
+    "fields": {
+      "title": "Евгений Онегин",
+      "description": "Роман в стихах.",
+      "release_year": 1833,
+      "is_published": true,
+      "poster": "",
+      "author": 6,
+      "genres": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 13,
+    "fields": {
+      "title": "Процесс",
+      "description": "Абсурд и суд.",
+      "release_year": 1925,
+      "is_published": true,
+      "poster": "",
+      "author": 7,
+      "genres": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 14,
+    "fields": {
+      "title": "Мастер и Маргарита",
+      "description": "Мистика и сатира.",
+      "release_year": 1967,
+      "is_published": true,
+      "poster": "",
+      "author": 8,
+      "genres": [
+        1,
+        4
+      ]
+    }
+  }
+]

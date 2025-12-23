@@ -1,0 +1,23 @@
+{% extends "../base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <h2>Регистрация</h2>
+        {{ form.non_field_errors }}
+
+        Имя пользователя: {{ form.username }} 
+        E-mail: {{ form.email }}
+        Пароль: {{ form.password1 }}
+        Подтверждение пароля: {{ form.password2 }}
+
+
+        <button type="submit">Зарегистрироваться</button>
+        Уже есть аккаунт? <a href="{% url 'login' %}" class="book-genre">Войти</a>
+    </form>
+</div>
+
+{% endblock %}

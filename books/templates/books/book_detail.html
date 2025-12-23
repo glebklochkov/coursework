@@ -1,0 +1,96 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}
+{{ book.title }}
+{% endblock %}
+
+{% block content %}
+<div class="row book-detail">
+
+    <!-- Левая колонка: обложка -->
+    <div class="col-md-4 col-lg-3">
+        <div class="book-poster">
+            {% if book.poster %}
+                <img src="{{ book.poster.url }}" alt="{{ book.title }}">
+            {% else %}
+                <img src="{% static 'img/book-default.jpg' %}" alt="{{ book.title }}">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Правая колонка: информация -->
+    <div class="col-md-8 col-lg-9">
+
+        <!-- Название -->
+        <h1 class="book-title">{{ book.title }}</h1>
+
+        <!-- Автор -->
+        <p class="book-author">
+            <a href="{% url 'books:author' book.author.id %}">{{ book.author.fullname }}</a>
+        </p>
+
+        <!-- Кнопки -->
+        <div class="book-actions mb-3">
+            <button class="book-action-btn js-toggle">
+                <i class="bi bi-bookmark"></i>
+                <span class="text-off">В закладки</span>
+                <span class="text-on">В закладках</span>
+            </button>
+
+            <button class="book-action-btn js-toggle">
+                <i class="bi bi-eye"></i>
+                <span class="text-off">Не прочитано</span>
+                <span class="text-on">Прочитано</span>
+            </button>
+        </div>
+
+        <!-- Год и жанры -->
+        <div class="book-meta mb-4">
+            <span class="me-3">Год выхода: {{ book.release_year }}</span>
+            <span>
+                Жанры:
+                {% for genre in book.genres.all %}
+                    <a href="{% url 'books:genre' genre.slug %}" class="book-genre">{{ genre.genre }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </span>
+        </div>
+
+        <!-- Описание -->
+        <div class="book-description">
+            <h5>Описание</h5>
+            <p>{{ book.description }}</p>
+        </div>
+
+    </div>
+</div><script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.js-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('active');
+
+            const icon = button.querySelector('i');
+
+            // Закладки
+            if (icon.classList.contains('bi-bookmark') || icon.classList.contains('bi-bookmark-fill')) {
+                if (button.classList.contains('active')) {
+                    icon.className = 'bi bi-bookmark-fill';
+                } else {
+                    icon.className = 'bi bi-bookmark';
+                }
+            }
+
+            // Прочитано
+            if (icon.classList.contains('bi-eye') || icon.classList.contains('bi-eye-fill')) {
+                if (button.classList.contains('active')) {
+                    icon.className = 'bi bi-eye-fill';
+                } else {
+                    icon.className = 'bi bi-eye';
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

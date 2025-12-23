@@ -1,0 +1,18 @@
+{% extends "../base.html" %}
+{% block title %}Выход из профиля{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <h2>Выход</h2>
+        <h3>Вы вышли из системы!</h3>
+
+        <div class="d-flex main-buttons">
+            <a href="{% url 'login' %}" class="main-btn">Вход</a>
+            <a href="{% url 'registration' %}" class="main-btn">Регистрация</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
