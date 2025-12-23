@@ -24,7 +24,7 @@
             <!-- Правая часть -->
             {% if user.is_authenticated %}
                 <div class="d-flex">
-                    <a href="" class="btn btn-outline-light login-btn">Профиль</a>
+                    <a href="{% url 'users:profile' user.id %}" class="btn btn-outline-light login-btn">Профиль</a>
                 </div>
                 <div class="d-flex">
                     <form method="post" action="{% url 'logout' %}">
