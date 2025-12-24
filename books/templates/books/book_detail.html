@@ -16,9 +16,19 @@
             {% if book.poster %}
                 <img src="{{ book.poster.url }}" alt="{{ book.title }}">
             {% else %}
-                <img src="{% static 'img/book-default.jpg' %}" alt="{{ book.title }}">
+                <div class="book-poster-empty mb-4">
+                    <i class="bi bi-book"></i>
+                </div>
             {% endif %}
         </div>
+        {% if request.user.is_staff %}
+        <div class="profile-edit-btn-container">
+            <a href="" class="body-btn w-100">
+                <i class="bi bi-pencil-square me-2"></i>
+                Редактировать
+            </a>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Правая колонка: информация -->

@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('books.urls')),
     path('users/', include('users.urls')),
+    path('auth/login/', views.UserLoginView.as_view(), name='login'),
     path('auth/', include('django.contrib.auth.urls')),
     path('registration/', views.UserRegistrationView.as_view(), name='registration'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,6 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.urls.base import reverse
 from django.views.generic import CreateView, DetailView
 
 from users.forms import UserRegistrationForm
@@ -17,6 +18,10 @@ class UserAccountView(DetailView):
 class UserLoginView(LoginView):
     form_class = AuthenticationForm
     template_name = 'registration/login.html'
+
+    def get_success_url(self):
+        user_id = self.request.user.id
+        return reverse_lazy('users:profile', kwargs={'pk': user_id})
 
 
 class UserRegistrationView(CreateView):
