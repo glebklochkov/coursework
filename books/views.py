@@ -2,8 +2,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, DetailView, UpdateView
 
+from books.forms import BookForm
 from books.models import Book
 
 
@@ -50,28 +52,6 @@ class BooksListView(ListView):
         return queryset
 
 
-# class MainPageListView(ListViewMixin, ListView):
-#     template_name = 'books/index.html'
-#
-#     def get_queryset(self):
-#         queryset = Book.objects.all().order_by('title')
-#         return queryset
-#
-#
-# class GenreListView(ListViewMixin, ListView):
-#
-#     def get_queryset(self):
-#         queryset = Book.objects.filter(genres__slug=self.kwargs['genre_slug']).order_by('title')
-#         return queryset
-#
-#
-# class AuthorListView(ListViewMixin, ListView):
-#
-#     def get_queryset(self):
-#         queryset = Book.objects.filter(author__id=int(self.kwargs['author_id'])).order_by('title')
-#         return queryset
-#
-#
 class BookDetailView(DetailView):
     model = Book
     template_name = 'books/book_detail.html'
@@ -85,6 +65,17 @@ class BookDetailView(DetailView):
         context["is_saved"] = user.is_authenticated and book in user.saved_books.all()
         context["is_read"] = user.is_authenticated and book in user.read_books.all()
         return context
+
+
+class BookEdit(UpdateView):
+    model = Book
+    form_class = BookForm
+    context_object_name = 'book'
+    template_name = 'books/book_edit_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('books:detail', kwargs={'pk': self.object.pk})
+
 
 
 @login_required

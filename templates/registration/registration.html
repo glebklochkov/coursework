@@ -8,12 +8,16 @@
         {% csrf_token %}
         <h2>Регистрация</h2>
         {{ form.non_field_errors }}
+        {{ form.username.errors }}
+        {{ form.email.errors }}
 
         Имя пользователя: {{ form.username }} 
         E-mail: {{ form.email }}
+
+        {{ form.password1.errors }}
+        {{ form.password2.errors }}
         Пароль: {{ form.password1 }}
         Подтверждение пароля: {{ form.password2 }}
-
 
         <button type="submit">Зарегистрироваться</button>
         Уже есть аккаунт? <a href="{% url 'login' %}" class="book-genre">Войти</a>

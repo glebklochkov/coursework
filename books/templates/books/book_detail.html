@@ -23,7 +23,7 @@
         </div>
         {% if request.user.is_staff %}
         <div class="profile-edit-btn-container">
-            <a href="" class="body-btn w-100">
+            <a href="{% url 'books:book_edit' book.id %}" class="body-btn w-100">
                 <i class="bi bi-pencil-square me-2"></i>
                 Редактировать
             </a>

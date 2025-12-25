@@ -200,23 +200,6 @@ a:hover {
     font-size: 10rem;
 }
 
-/*.profile-avatar {*/
-/*    width: 200px;*/
-/*    height: 200px;*/
-/*    background-color: #684a33;*/
-/*    color: white;*/
-/*    border-radius: 1rem; !* Закругленные углы *!*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    margin: 0 auto;*/
-/*    box-shadow: 0 5px 15px rgba(0,0,0,0.1);*/
-/*}*/
-
-/*.profile-avatar i {*/
-/*    font-size: 5rem;*/
-/*}*/
-
 .book-detail {
     margin-top: 2px;
 }
@@ -345,6 +328,140 @@ a:hover {
 
 .book-description p {
     line-height: 1.6;
+}
+
+/* ===== Редактирование книги ===== */
+.book-title-input {
+    border: 2px solid #250f00;
+    font-size: 2rem;
+    font-weight: 700;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+}
+
+.book-title-input:focus {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    border: 2px solid #b8a489;
+}
+
+.author-select {
+    border: 2px solid #250f00;
+    background: transparent;
+}
+
+.author-select:focus {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    border: 2px solid #b8a489;
+}
+
+.year-input {
+    border: 2px solid #250f00;
+    width: 100%;
+    max-width: 90px;
+    background: transparent;
+    font-weight: 600;
+}
+
+.year-input:focus {
+    box-shadow: none;
+    outline: none;
+    border: 2px solid #b8a489;
+    background: transparent;
+}
+
+.genres-select {
+    border: 2px solid #250f00;
+    border-radius: 2px;
+}
+
+.genres-select:focus{
+    border: 2px solid #b8a489;
+    box-shadow: none;
+    outline: none;
+}
+
+.description-input {
+    border: 2px solid #250f00;
+    padding: 18px;
+    resize: none;
+}
+
+.description-input:focus {
+    border: 2px solid #b8a489;
+    box-shadow: none;
+    outline: none;
+}
+
+.edit-line {
+    display: flex;
+    align-items: center;
+    /*gap: 8px;*/
+
+}
+
+.edit-line span {
+    font-weight: 600;
+}
+
+/* Поле select2 — как обычный input у тебя */
+.select2-container .select2-selection--single,
+.select2-container .select2-selection--multiple {
+    background: transparent !important;
+    border: 2px solid #250f00 !important;   /* тот же коричневый */
+}
+
+/* Текст в поле */
+.select2-container--default .select2-selection__rendered {
+    color: #250f00 !important;
+}
+
+/* Стрелка */
+.select2-container--default .select2-selection__arrow b {
+    border-color: #250f00 transparent transparent transparent;
+}
+
+/* Фокус */
+.select2-container--default.select2-container--focus
+.select2-selection--single,
+.select2-container--default.select2-container--focus
+.select2-selection--multiple {
+    border-color: #b8a489 !important;
+    box-shadow: none;
+}
+
+/* Выпадающее меню */
+.select2-dropdown {
+    background: #fff;
+    border: 2px solid #250f00;
+}
+
+/* Поиск */
+.select2-search input {
+    background: transparent;
+    border: 2px solid #250f00;
+    color: #684a33;
+}
+
+/* Обычные элементы списка */
+.select2-results__option {
+    color: #000;
+}
+
+/* Наведённый элемент – коричневый */
+.select2-results__option--highlighted {
+    background: #b8a489 !important;
+    color: #fff !important;
+}
+
+/* Выбранный элемент */
+.select2-results__option--selected {
+    background: #684a33 !important;
+    color: #fff !important;
 }
 
  /* ==== Вход и регистрация ==== */
