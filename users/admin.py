@@ -5,6 +5,14 @@ from users.models import User
 
 UserAdmin.fieldsets += (
     (
+        'Профиль',
+        {
+            'fields': (
+                'avatar',
+            )
+        }
+    ),
+    (
         'Книги',
         {
             'fields': (
