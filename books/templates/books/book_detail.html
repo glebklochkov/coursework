@@ -13,7 +13,7 @@
     <!-- Левая колонка: обложка -->
     <div class="col-12 col-md-4 col-lg-3">
         <div class="book-poster">
-            {% if book.poster %}
+            {% if book.poster or book.poster.is_blank %}
                 <img src="{{ book.poster.url }}" alt="{{ book.title }}">
             {% else %}
                 <div class="book-poster-empty mb-4">
@@ -46,7 +46,11 @@
         <div class="profile-info mb-4">
             <div class="profile-info-item">
                 <i class="bi bi-calendar-event"></i>
+                {% if book.release_year %}
                 <span>Год выхода: <strong>{{ book.release_year }}</strong></span>
+                {% else %}
+                <span>Год выхода: неизвестен</span>
+                {% endif %}
             </div>
 
             <div class="profile-info-item">
@@ -83,7 +87,11 @@
         <!-- Описание -->
         <div class="book-description">
             <h5>Описание</h5>
+            {% if book.description %}
             <p>{{ book.description }}</p>
+            {% else %}
+            <p>Нет описания</p>
+            {% endif %}
         </div>
 
     </div>

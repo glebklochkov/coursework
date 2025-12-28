@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.migrations import RenameModel
 
 
 class Author(models.Model):
@@ -15,7 +16,7 @@ class Author(models.Model):
 
 class Genre(models.Model):
     genre = models.CharField(verbose_name='Жанр', max_length=50)
-    slug = models.SlugField(verbose_name='Идентификатор', unique=True)
+    slug = models.SlugField(verbose_name='Слаг', unique=True)
 
     class Meta:
         verbose_name = 'жанр',
@@ -28,8 +29,8 @@ class Genre(models.Model):
 
 class Book(models.Model):
     title = models.CharField(verbose_name='Название', max_length=200)
-    description = models.TextField('Описание')
-    release_year = models.IntegerField('Год выхода')
+    description = models.TextField('Описание', blank=True, null=True)
+    release_year = models.IntegerField('Год выхода', blank=True, null=True)
     is_published = models.BooleanField('Опубликовано', default=True)
     poster = models.ImageField('Обложка', upload_to='books-posters', blank=True)
     author = models.ForeignKey(

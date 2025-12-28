@@ -12,14 +12,14 @@ from books.models import Book
 class ListViewMixin:
     model = Book
     context_object_name = 'book_list'
-    paginate_by = 4
+    paginate_by = 40
     template_name = 'books/book_list.html'
 
 
 class BooksListView(ListView):
     model = Book
     context_object_name = 'book_list'
-    paginate_by = 8
+    paginate_by = 40
     template_name = 'books/book_list.html'  # можно переопределять в url
 
     def get_queryset(self):
