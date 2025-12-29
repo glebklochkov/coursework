@@ -1,6 +1,6 @@
 from django import forms
 
-from books.models import Book, Genre
+from books.models import Book, Genre, Author
 
 
 class BookForm(forms.ModelForm):
@@ -31,3 +31,15 @@ class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['genres'].queryset = Genre.objects.order_by('genre')
+
+
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = ('fullname', 'shortname')
+
+
+class GenreForm(forms.ModelForm):
+    class Meta:
+        model = Genre
+        fields = ('genre', 'slug')

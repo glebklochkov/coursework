@@ -2,7 +2,13 @@
 {% load static %}
 
 {% block title %}
-Главная
+{% if '/author/' in request.path %}
+    {{ author.shortname }}: все книги
+{% elif '/genre/' in request.path %}
+    {{ genre }}: все книги
+{% else %}
+    Список книг
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -10,6 +16,13 @@
     <!-- Левый блок: карточки книг -->
     <div class="col-lg-9">
         <div id="books-container" class="row g-4">
+        {% if '/author/' in request.path %}
+            <h1 class="book-title">{{ author.fullname }}: все книги</h1>
+        {% elif '/genre/' in request.path %}
+            <h1 class="book-title">{{ genre }}: все книги</h1>
+        {% else %}
+            <h1 class="book-title">Книги</h1>
+        {% endif %}
             {% for book in book_list %}
             <div class="col-md-6 col-lg-3">
                 <div class="card h-100">
@@ -39,6 +52,17 @@
 
     <!-- Правый блок: фильтры и сортировки -->
     <div class="col-lg-3">
+    {% if '/author/' in request.path %}
+        <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:author_edit' author.id %}'">
+            <i class="bi bi-pencil-square"></i>
+            Изменить автора
+        </button>
+    {% elif '/genre/' in request.path %}
+        <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:genre_edit' genre.slug %}'">
+            <i class="bi bi-pencil-square"></i>
+            Изменить жанр
+        </button>
+    {% endif %}
         <h5>Фильтры</h5>
         <ul class="list-group mb-4">
             {% for genre in genre_list %}

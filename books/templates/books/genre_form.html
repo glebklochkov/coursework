@@ -1,0 +1,61 @@
+{% extends "../base.html" %}
+
+{% block title %}
+    {% if '/create/' in request.path %}
+        Создание жанра
+    {% elif '/edit/' in request.path %}
+        Редактирование жанра
+    {% else %}
+        Удаление жанра
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_staff %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        {% if '/create/' in request.path %}
+            <h2>Создание жанра</h2>
+            {{ form.non_field_errors }}
+            {{ form.genre.errors }}
+
+            Название жанра: {{ form.genre }}
+
+            <div class="d-flex main-buttons">
+            <button type="submit" class="body-btn">Создать</button>
+            <button type="button" class="body-btn" onclick="window.location.href='{{ request.META.HTTP_REFERER|default:'/' }}'">
+                Отмена
+            </button>
+            </div>
+        {% elif '/edit/' in request.path %}
+            <h2>Редактирование жанра</h2>
+            {{ form.non_field_errors }}
+            {{ form.genre.errors }}
+            {{ form.slug.errors }}
+
+            Название жанра: {{ form.genre }}
+            Слаг жанра: {{ form.slug }}
+
+            <div class="d-flex main-buttons">
+            <button type="submit" class="body-btn">Сохранить</button>
+            <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:genre_delete' genre.slug %}'">
+                Удалить
+            </button>
+            </div>
+        {% else %}
+            <h2>Удаление жанра</h2>
+            <p>Вы точно хотите удалить жанр <strong>{{ genre }}?</strong></p>
+
+            <div class="d-flex main-buttons">
+            <button type="submit" class="body-btn">Удалить</button>
+            <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:genre_edit' genre.slug %}'">
+                Отмена
+            </button>
+            </div>
+        {% endif %}
+    </form>
+</div>
+
+{% endif %}
+{% endblock %}

@@ -124,5 +124,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 
 MEDIA_ROOT = BASE_DIR / 'media'
-
-GOOGLE_BOOKS_API_KEY = 'AIzaSyAYaKn03COgB6DgehBZA7C3WaL4mxGo-Tg'

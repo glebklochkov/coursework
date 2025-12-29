@@ -225,6 +225,9 @@ a:hover {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .book-author a {
@@ -296,7 +299,7 @@ a:hover {
 .book-genre {
     display: inline-block;
     margin-right: 0.1rem;
-    margin-bottom: 0.1rem;
+    margin-bottom: 0.4rem;
     padding: 0.25rem 0.6rem;
     background-color: transparent;
     border: 2px solid #684a33;
@@ -363,7 +366,7 @@ a:hover {
 }
 
 .profile-info-item span {
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .author-select {
@@ -612,12 +615,13 @@ a:hover {
     font-size: 0.9rem;            /* чуть меньше стандартного текста */
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    margin: 0.2rem;
 }
 
 /* при наведении */
 .body-btn:hover {
     background-color: #684a33;    /* заливка при наведении */
-    border: 2px solid #684a33;
+    /*border: 2px solid #684a33;*/
     color: #fff;
 }
 
@@ -668,8 +672,15 @@ a:hover {
 
 /* Кнопка под аватаром */
 .profile-edit-btn-container {
+    display: flex;
     margin-top: 1.5rem;
     padding: 0 1rem;
+}
+
+.profile-edit-btn-container .body-btn{
+    display: inline-flex;     /* чтобы кнопка вела себя как инлайн-элемент */
+    align-items: center;      /* выровнять иконку и текст по центру */
+    gap: 6px;                 /* расстояние между иконкой и текстом */
 }
 
 .profile-page .profile-right {

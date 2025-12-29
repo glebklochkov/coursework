@@ -1,14 +1,34 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.db.migrations import RenameModel
+from slugify import slugify
 
+
+cyrillic_slug_validator = RegexValidator(
+    regex=r'^[\w-а-яА-ЯёЁ]+$',
+    message='Разрешены буквы, цифры, дефис и подчёркивание'
+)
 
 class Author(models.Model):
-    shortname = models.CharField(verbose_name='Фамилия', max_length=50)
     fullname = models.CharField(verbose_name='Полное имя', max_length=200)
+    shortname = models.CharField(verbose_name='Фамилия', max_length=50, blank=True)
 
     class Meta:
         verbose_name = 'автор'
         verbose_name_plural = 'Авторы'
+
+    def save(self, *args, **kwargs):
+        if not self.shortname and self.fullname:
+            author_name_split = self.fullname.split()
+            shortname_generated = ""
+            for i in range(0, len(author_name_split)):
+                if i != len(author_name_split) - 1:
+                    shortname_generated += author_name_split[i][0] + '. '
+                else:
+                    shortname_generated += author_name_split[i]
+            self.shortname = shortname_generated
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.fullname
@@ -16,11 +36,18 @@ class Author(models.Model):
 
 class Genre(models.Model):
     genre = models.CharField(verbose_name='Жанр', max_length=50)
-    slug = models.SlugField(verbose_name='Слаг', unique=True)
+    slug = models.SlugField(verbose_name='Слаг', unique=True, blank=True, allow_unicode=True)
 
     class Meta:
         verbose_name = 'жанр',
         verbose_name_plural = 'Жанры'
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.genre:
+            slug_generated = slugify(self.genre, allow_unicode=True)
+            self.slug = slug_generated
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.genre

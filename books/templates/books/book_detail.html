@@ -23,9 +23,13 @@
         </div>
         {% if request.user.is_staff %}
         <div class="profile-edit-btn-container">
-            <a href="{% url 'books:book_edit' book.id %}" class="body-btn w-100">
+            <a href="{% url 'books:book_edit' book.id %}" class="body-btn">
                 <i class="bi bi-pencil-square me-2"></i>
                 Редактировать
+            </a>
+            <a href="{% url 'books:book_delete' book.id %}" class="body-btn">
+                <i class="bi bi-trash"></i>
+                Удалить
             </a>
         </div>
         {% endif %}

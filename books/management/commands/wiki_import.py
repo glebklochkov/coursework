@@ -13,8 +13,15 @@ WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 WIKIPEDIA_API_URL = "https://ru.wikipedia.org/w/api.php"
 
 AUTHOR_MAP = {
-    "Александр Сергеевич Пушкин": "Q7200",
-    # Добавь остальных позже
+    # "Александр Сергеевич Пушкин": "Q7200",
+    # "Фёдор Михайлович Достоевский": "Q991",
+    # "Михаил Афанасьевич Булгаков": "Q835",
+    "Александр Дюма": "Q38337",
+    # "Николай Васильевич Гоголь": "Q43718",
+    # "Лев Николаевич Толстой": "Q7243",
+    # "Антон Павлович Чехов": "Q5685",
+    # "Иван Сергеевич Тургенев": "Q42831",
+    # "Артур Конан Дойл": "Q35610",
 }
 
 def get_books_from_wikidata(author_qid):
@@ -233,8 +240,8 @@ class Command(BaseCommand):
                 total_saved += 1
                 self.stdout.write(self.style.SUCCESS(f"Добавлена книга: {title} ({book_info['year']})"))
 
-                time.sleep(1)  # Пауза между книгами
+                time.sleep(3)  # Пауза между книгами
 
-            time.sleep(3)  # Пауза между авторами
+            time.sleep(5)  # Пауза между авторами
 
         self.stdout.write(self.style.SUCCESS(f"\nГОТОВО! Добавлено книг: {total_saved}"))

@@ -1,0 +1,61 @@
+{% extends "../base.html" %}
+
+{% block title %}
+    {% if '/create/' in request.path %}
+        Создание автора
+    {% elif '/edit/' in request.path %}
+        Редактирование автора
+    {% else %}
+        Удаление автора
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_staff %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        {% if '/create/' in request.path %}
+            <h2>Создание автора</h2>
+            {{ form.non_field_errors }}
+            {{ form.fullname.errors }}
+
+            Полное имя автора: {{ form.fullname }}
+
+            <div class="d-flex main-buttons">
+            <button type="submit" class="body-btn">Создать</button>
+            <button type="button" class="body-btn" onclick="window.location.href='{{ request.META.HTTP_REFERER|default:'/' }}'">
+                Отмена
+            </button>
+            </div>
+        {% elif '/edit/' in request.path %}
+            <h2>Редактирование автора</h2>
+            {{ form.non_field_errors }}
+            {{ form.fullname.errors }}
+            {{ form.shortname.errors }}
+
+            Полное имя автора: {{ form.fullname }}
+            Сокращенное имя: {{ form.shortname }}
+
+            <div class="d-flex main-buttons">
+            <button type="submit" class="body-btn">Сохранить</button>
+            <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:author_delete' author.id %}'">
+                Удалить
+            </button>
+            </div>
+        {% else %}
+            <h2>Удаление автора</h2>
+            <p>Вы точно хотите удалить автора <strong>{{ author.fullname }}?</strong></p>
+
+            <div class="d-flex main-buttons">
+            <button type="submit" class="body-btn">Удалить</button>
+            <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:author_edit' author.id %}'">
+                Отмена
+            </button>
+            </div>
+        {% endif %}
+    </form>
+</div>
+
+{% endif %}
+{% endblock %}
