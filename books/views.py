@@ -9,13 +9,6 @@ from books.forms import BookForm, AuthorForm, GenreForm
 from books.models import Book, Author, Genre
 
 
-class ListViewMixin:
-    model = Book
-    context_object_name = 'book_list'
-    paginate_by = 40
-    template_name = 'books/book_list.html'
-
-
 class BooksListView(ListView):
     model = Book
     context_object_name = 'book_list'
@@ -61,6 +54,11 @@ class BooksListView(ListView):
         return context
 
 
+class BookMixin:
+    model = Book
+    context_object_name = 'book'
+
+
 class BookDetailView(DetailView):
     model = Book
     template_name = 'books/book_detail.html'
@@ -74,6 +72,14 @@ class BookDetailView(DetailView):
         context["is_saved"] = user.is_authenticated and book in user.saved_books.all()
         context["is_read"] = user.is_authenticated and book in user.read_books.all()
         return context
+
+
+class BookCreateView(BookMixin, CreateView):
+    form_class = BookForm
+    template_name = 'books/book_edit_form.html'
+
+    def get_success_url(self):
+        return reverse_lazy('books:detail', kwargs={'pk': self.object.pk})
 
 
 class BookEdit(UpdateView):

@@ -1,7 +1,13 @@
 {% extends "../base.html" %}
 {% load static %}
 
-{% block title %}{{ book.title }}{% endblock %}
+{% block title %}
+    {% if '/edit/' in request.path %}
+    {{ book.title }}
+    {% else %}
+    Создание книги
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 {% if request.user.is_staff %}
@@ -29,10 +35,17 @@
                 <i class="bi bi-check-lg"></i>
                 Сохранить
             </button>
+            {% if '/edit/' in request.path %}
             <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:detail' book.id %}'">
                 <i class="bi bi-x"></i>
                 Отмена
             </button>
+            {% else %}
+                <button type="button" class="body-btn" onclick="window.location.href='{{ request.META.HTTP_PREFER|default:'/' }}'">
+                <i class="bi bi-x"></i>
+                Отмена
+            </button>
+            {% endif %}
         </div>
     </div>
 
@@ -86,7 +99,11 @@
         <h2>Ошибка</h2>
         <p>Для редактирования книги необходимо обладать правами администратора</p>
         <div class="d-flex main-buttons">
+            {% if '/edit/' in request.path %}
             <a href="{% url 'books:detail' book.id %}" class="main-btn">Жаль :(</a>
+            {% else %}
+            <a href="{{ request.META.HTTP_PREFER|default:'/' }}" class="main-btn">Жаль :(</a>
+            {% endif %}
         </div>
     </form>
 </div>

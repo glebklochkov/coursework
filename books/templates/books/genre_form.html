@@ -56,6 +56,20 @@
         {% endif %}
     </form>
 </div>
-
+{% else %}
+    <div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <h2>Ошибка</h2>
+        <p>Для редактирования жанра необходимо обладать правами администратора</p>
+        <div class="d-flex main-buttons">
+            {% if '/edit/' in request.path %}
+            <a href="{% url 'books:genre' genre.slug %}" class="main-btn">Жаль :(</a>
+            {% else %}
+            <a href="{{ request.META.HTTP_PREFER|default:'/' }}" class="main-btn">Жаль :(</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
 {% endif %}
 {% endblock %}

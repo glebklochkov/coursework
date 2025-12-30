@@ -52,6 +52,7 @@
 
     <!-- Правый блок: фильтры и сортировки -->
     <div class="col-lg-3">
+    {% if request.user.is_staff %}
     {% if '/author/' in request.path %}
         <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:author_edit' author.id %}'">
             <i class="bi bi-pencil-square"></i>
@@ -61,6 +62,11 @@
         <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:genre_edit' genre.slug %}'">
             <i class="bi bi-pencil-square"></i>
             Изменить жанр
+        </button>
+    {% endif %}
+        <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:book_create' %}'">
+            <i class="bi bi-plus"></i>
+            Добавить книгу
         </button>
     {% endif %}
         <h5>Фильтры</h5>
