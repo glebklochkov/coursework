@@ -21,4 +21,5 @@ urlpatterns = [
     path('author/<int:pk>/delete/', views.AuthorDeleteView.as_view(), name='author_delete'),
     path('toggle_saved/<int:book_id>/', toggle_saved, name='toggle_saved'),
     path('toggle_read/<int:book_id>/', toggle_read, name='toggle_read'),
+    path('rate/', views.rate_book, name='rate_book'),
 ]

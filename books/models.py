@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.migrations import RenameModel
+from django.db.models import Avg
 from slugify import slugify
-
 
 cyrillic_slug_validator = RegexValidator(
     regex=r'^[\w-а-яА-ЯёЁ]+$',
@@ -71,9 +72,37 @@ class Book(models.Model):
         related_name='books'
     )
 
+    def average_rating(self):
+        return self.ratings.aggregate(avg=Avg('value'))['avg'] or 0
+
+    def ratings_count(self):
+        return self.ratings.count()
+
     class Meta:
         verbose_name = 'книга'
         verbose_name_plural = 'Книги'
 
     def __str__(self):
         return self.title
+
+
+class BookRating(models.Model):
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name='ratings'
+    )
+    user = models.ForeignKey(
+        get_user_model(),
+        on_delete = models.CASCADE,
+        related_name='ratings'
+    )
+    value = models.IntegerField('Оценка')
+
+    class Meta:
+        unique_together = ('book', 'user')
+        verbose_name = 'рейтинг'
+        verbose_name_plural = 'Рейтинги'
+
+    def __str__(self):
+        return f'{self.user} --> {self.book}: {self.value}'

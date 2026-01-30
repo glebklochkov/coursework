@@ -82,3 +82,64 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+// кнопки оценки
+document.addEventListener('DOMContentLoaded', () => {
+
+    document.querySelectorAll('.rating-star').forEach(star => {
+        star.addEventListener('click', function () {
+
+            const value = this.dataset.value;
+            const container = this.closest('.rating');
+            const bookId = container.dataset.bookId;
+
+            fetch('/rate/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `book_id=${bookId}&value=${value}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    highlightStars(container, value);
+                    document.getElementById('avg-rating').textContent =
+                        Number(data.avg).toFixed(1);
+                }
+            });
+        });
+    });
+
+});
+
+function highlightStars(container, value) {
+    container.querySelectorAll('.rating-star').forEach(star => {
+        if (star.dataset.value <= value) {
+            star.classList.remove('bi-star');
+            star.classList.add('bi-star-fill');
+        } else {
+            star.classList.remove('bi-star-fill');
+            star.classList.add('bi-star');
+        }
+    });
+
+    const userRating = document.getElementById('user-rating');
+    if (userRating) {
+        userRating.textContent = value;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.rating').forEach(container => {
+        const userRating = parseInt(container.dataset.userRating || 0);
+        if (userRating > 0) {
+            highlightStars(container, userRating);
+        }
+    });
+});
+
+
+
+

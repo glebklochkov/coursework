@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
 from books.forms import BookForm, AuthorForm, GenreForm
-from books.models import Book, Author, Genre
+from books.models import Book, Author, Genre, BookRating
 
 
 class BooksListView(ListView):
@@ -32,6 +33,8 @@ class BooksListView(ListView):
         else:
             queryset = queryset.order_by("title")
 
+        # user_id = self.kwargs.get('pk')
+        # user = get_object_or_404(get_user_model(), id=user_id)
         if self.request.resolver_match.url_name == "saved_books":
             user_id = self.kwargs.get('pk')
             user = get_object_or_404(get_user_model(), id=user_id)
@@ -40,6 +43,10 @@ class BooksListView(ListView):
             user_id = self.kwargs.get('pk')
             user = get_object_or_404(get_user_model(), id=user_id)
             queryset = user.read_books.all()
+        elif self.request.resolver_match.url_name == 'rated_books':
+            user_id = self.kwargs.get('pk')
+            user = get_object_or_404(get_user_model(), id=user_id)
+            queryset = user.rated_books.all()
 
         return queryset
 
@@ -71,7 +78,16 @@ class BookDetailView(DetailView):
 
         context["is_saved"] = user.is_authenticated and book in user.saved_books.all()
         context["is_read"] = user.is_authenticated and book in user.read_books.all()
+
+        if user.is_authenticated:
+            rating = BookRating.objects.filter(
+                book=book,
+                user=user
+            ).first()
+            context["user_rating"] = rating.value if rating else 0
+
         return context
+
 
 
 class BookCreateView(BookMixin, CreateView):
@@ -179,3 +195,29 @@ def toggle_read(request, book_id):
         status = "added"
 
     return JsonResponse({"status": status})
+
+@require_POST
+@login_required
+def rate_book(request):
+    book_id = request.POST.get('book_id')
+    value = int(request.POST.get('value'))
+    user = request.user
+
+    if value < 1 or value > 5:
+        return JsonResponse({'error': 'Invalid rating'}, status=400)
+
+    book = Book.objects.get(id=book_id)
+    user.rated_books.add(book)
+
+    rating, created = BookRating.objects.update_or_create(
+        book=book,
+        user=request.user,
+        defaults={'value': value}
+    )
+
+    return JsonResponse({
+        'success': True,
+        'rating': value,
+        'avg': book.average_rating(),
+        'count': book.ratings_count()
+    })

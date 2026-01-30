@@ -84,6 +84,15 @@
                             </div>
                         </a>
                     </div>
+
+                    <div class="square-stat-item">
+                        <a href="{% url "users:rated_books" user.id %}" class="square-stat-link">
+                            <div class="square-stat-number">{{ user.rated_books.count }}</div>
+                            <div class="square-stat-label">
+                                Оценки
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
             </div>

@@ -13,6 +13,9 @@ class User(AbstractUser):
     read_books = models.ManyToManyField(
         Book, blank=True, related_name='users_read', verbose_name='Прочитанные книги'
     )
+    rated_books = models.ManyToManyField(
+        Book, blank=True, related_name='users_rated', verbose_name='Оценённые книги'
+    )
 
     class Meta:
         verbose_name = 'пользователь'
