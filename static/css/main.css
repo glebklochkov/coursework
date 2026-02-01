@@ -86,6 +86,19 @@ a:hover {
     color: #ea7676;
 }
 
+/*.sort-btn {*/
+/*    align-items: baseline;*/
+/*    border: 2px solid #684a33;*/
+/*    color: #684a33;*/
+/*    margin-top: 0.3rem;*/
+/*}*/
+
+/*.sort-btn:hover {*/
+/*    background-color: transparent; !* без заливки *!*/
+/*    border-color: #250f00;*/
+/*    color: #250f00;*/
+/*}*/
+
 /* каточки книг */
 .card {
     border-radius: 0.7rem;
@@ -155,6 +168,49 @@ a:hover {
     font-size: 0.85rem;
     color: #555;
     margin-top: 0; /* подняли выше к автору */
+}
+
+/* Контейнер списка сортировок */
+ul.list-group {
+    width: 100%;                /* занимает всю ширину правого блока */
+}
+
+/* Каждая кнопка сортировки */
+.sort-btn {
+    list-style: none;           /* убираем маркер списка, если нужно */
+    margin: 0.3rem 0;           /* вертикальный отступ между кнопками */
+    padding: 0;
+    width: 100%;                /* !!! заставляем каждую li занимать всю ширину */
+}
+
+/* Ссылка внутри кнопки */
+.sort-btn a {
+    display: flex;              /* flex → легко управлять выравниванием */
+    justify-content: space-between;  /* текст слева, иконка справа */
+    align-items: center;        /* вертикально по центру */
+    width: 80%;                /* растягиваем ссылку на всю ширину li */
+    padding: 0.5rem 1rem;       /* комфортные внутренние отступы */
+    border: 2px solid #250f00;
+    border-radius: 0.4rem;      /* можно оставить или убрать */
+    color: #250f00;
+    text-decoration: none;
+    background: transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;        /* текст в одну строку */
+}
+
+/* Наведение */
+.sort-btn a:hover {
+    background-color: transparent;
+    border-color: #684a33;
+    color: #684a33;
+}
+
+/* Иконка (если есть) */
+.sort-btn a i {
+    margin-left: 0.75rem;       /* расстояние между текстом и стрелкой */
+    font-size: 1rem;
+    transition: transform 0.2s ease;
 }
 
 /* ===== Страница книги ===== */

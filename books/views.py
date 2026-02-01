@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 
 from books.forms import BookForm, AuthorForm, GenreForm
+from books.management.recommendations.recommendations import recommend_books
 from books.models import Book, Author, Genre, BookRating
 
 
@@ -27,14 +28,6 @@ class BooksListView(ListView):
         if author:
             queryset = queryset.filter(author__id=author)
 
-        sort = self.request.GET.get("sort")
-        if sort:
-            queryset = queryset.order_by(sort)
-        else:
-            queryset = queryset.order_by("title")
-
-        # user_id = self.kwargs.get('pk')
-        # user = get_object_or_404(get_user_model(), id=user_id)
         if self.request.resolver_match.url_name == "saved_books":
             user_id = self.kwargs.get('pk')
             user = get_object_or_404(get_user_model(), id=user_id)
@@ -47,17 +40,58 @@ class BooksListView(ListView):
             user_id = self.kwargs.get('pk')
             user = get_object_or_404(get_user_model(), id=user_id)
             queryset = user.rated_books.all()
+        elif self.request.resolver_match.url_name == 'recommendations':
+            queryset = recommend_books(self.request.user)
+            sort = self.request.GET.get("sort", "score")
+            direction = self.request.GET.get("dir", "desc")
+            # reverse = direction == "desc"
+            if sort == "score":
+                queryset.sort(
+                    key=lambda b: (getattr(b, 'recommend_score', 0), b.id),
+                    reverse=(direction == "desc")
+                )
+            elif sort == "title":
+                queryset.sort(
+                    key=lambda b: b.title.lower(),
+                    reverse=(direction == "desc")
+                )
+            elif sort == "release_year":
+                queryset.sort(
+                    key=lambda b: b.release_year or 0,
+                    reverse=(direction == "desc")
+                )
+            return queryset
+
+        sort = self.request.GET.get("sort", "title")
+        direction = self.request.GET.get("dir", "asc")
+        allowed_sorts = {
+            "title": "title",
+            "release_year": "release_year",
+        }
+        sort_field = allowed_sorts.get(sort, "title")
+        if direction == "desc":
+            sort_field = f"-{sort_field}"
+        queryset = queryset.order_by(sort_field)
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         if self.kwargs.get("genre_slug"):
             genre = get_object_or_404(Genre, slug=self.kwargs.get('genre_slug'))
             context['genre'] = genre
         elif self.kwargs.get("author_id"):
             author = get_object_or_404(Author, id=self.kwargs.get('author_id'))
             context['author'] = author
+
+        if self.request.resolver_match.url_name == 'recommendations':
+            context["current_sort"] = self.request.GET.get("sort", "score")
+            context["current_dir"] = self.request.GET.get("dir", "desc")
+        else:
+            context["current_sort"] = self.request.GET.get("sort", "title")
+            context["current_dir"] = self.request.GET.get("dir", "asc")
+
         return context
 
 
@@ -87,7 +121,6 @@ class BookDetailView(DetailView):
             context["user_rating"] = rating.value if rating else 0
 
         return context
-
 
 
 class BookCreateView(BookMixin, CreateView):
@@ -196,6 +229,7 @@ def toggle_read(request, book_id):
 
     return JsonResponse({"status": status})
 
+
 @require_POST
 @login_required
 def rate_book(request):
@@ -203,17 +237,31 @@ def rate_book(request):
     value = int(request.POST.get('value'))
     user = request.user
 
+    book = get_object_or_404(Book, id=book_id)
+
+    # Снять оценку
+    if value == 0:
+        BookRating.objects.filter(book=book, user=user).delete()
+        user.rated_books.remove(book)
+
+        return JsonResponse({
+            'success': True,
+            'rating': 0,
+            'avg': book.average_rating(),
+            'count': book.ratings_count()
+        })
+
+    # Поставить / изменить оценку
     if value < 1 or value > 5:
         return JsonResponse({'error': 'Invalid rating'}, status=400)
 
-    book = Book.objects.get(id=book_id)
-    user.rated_books.add(book)
-
     rating, created = BookRating.objects.update_or_create(
         book=book,
-        user=request.user,
+        user=user,
         defaults={'value': value}
     )
+
+    user.rated_books.add(book)
 
     return JsonResponse({
         'success': True,

@@ -11,7 +11,7 @@
             </a>
             {% if user.is_authenticated %}
             <div class="d-flex">
-                <a href="" class="btn btn-outline-light login-btn">Рекомендации</a>
+                <a href="{% url 'books:recommendations' %}" class="btn btn-outline-light login-btn">Рекомендации</a>
             </div>
             {% endif %}
 

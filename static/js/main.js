@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", function () { // кнопка "Загрузить ещё"
+// Кнопка "Загрузить ещё"
+document.addEventListener("DOMContentLoaded", function () {
     const btn = document.getElementById("load-more");
     const container = document.getElementById("books-container");
 
@@ -7,7 +8,11 @@ document.addEventListener("DOMContentLoaded", function () { // кнопка "З�
     btn.addEventListener("click", async function () {
         let nextPage = btn.dataset.next;
 
-        const response = await fetch(`?page=${nextPage}`);
+        // Берём текущий URL и меняем/добавляем только page
+        const url = new URL(window.location.href);
+        url.searchParams.set('page', nextPage);
+
+        const response = await fetch(url.toString());
         const html = await response.text();
 
         // создаём временный DOM
@@ -89,9 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.rating-star').forEach(star => {
         star.addEventListener('click', function () {
 
-            const value = this.dataset.value;
+            const value = parseInt(this.dataset.value);
             const container = this.closest('.rating');
             const bookId = container.dataset.bookId;
+            const currentRating = parseInt(container.dataset.userRating || 0);
+
+            // если нажали на ту же оценку — снимаем её
+            const newValue = (value === currentRating) ? 0 : value;
 
             fetch('/rate/', {
                 method: 'POST',
@@ -99,14 +108,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     'X-CSRFToken': getCookie('csrftoken'),
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `book_id=${bookId}&value=${value}`
+                body: `book_id=${bookId}&value=${newValue}`
             })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    highlightStars(container, value);
-                    document.getElementById('avg-rating').textContent =
-                        Number(data.avg).toFixed(1);
+
+                    container.dataset.userRating = newValue;
+
+                    if (newValue === 0) {
+                        highlightStars(container, 0);
+                        document.getElementById('user-rating').textContent = '—';
+                    } else {
+                        highlightStars(container, newValue);
+                        document.getElementById('user-rating').textContent = newValue;
+                    }
                 }
             });
         });
@@ -114,9 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+
 function highlightStars(container, value) {
     container.querySelectorAll('.rating-star').forEach(star => {
-        if (star.dataset.value <= value) {
+        if (parseInt(star.dataset.value) <= value) {
             star.classList.remove('bi-star');
             star.classList.add('bi-star-fill');
         } else {
@@ -124,11 +141,6 @@ function highlightStars(container, value) {
             star.classList.add('bi-star');
         }
     });
-
-    const userRating = document.getElementById('user-rating');
-    if (userRating) {
-        userRating.textContent = value;
-    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -6,6 +6,14 @@
     {{ author.shortname }}: все книги
 {% elif '/genre/' in request.path %}
     {{ genre }}: все книги
+{% elif '/recommendations/' in request.path %}
+    Рекомендации
+{% elif '/read_books/' in request.path %}
+    Прочитанные книги
+{% elif '/saved_books/' in request.path %}
+    Закладки
+{% elif '/rated_books/' in request.path %}
+    Оценённые книги
 {% else %}
     Список книг
 {% endif %}
@@ -20,6 +28,14 @@
             <h1 class="book-title">{{ author.fullname }}: все книги</h1>
         {% elif '/genre/' in request.path %}
             <h1 class="book-title">{{ genre }}: все книги</h1>
+        {% elif '/read_books/' in request.path %}
+            <h1 class="book-title">Прочитанные книги</h1>
+        {% elif '/saved_books/' in request.path %}
+            <h1 class="book-title">Закладки</h1>
+        {% elif '/rated_books/' in request.path %}
+            <h1 class="book-title">Оценённые книги</h1>
+        {% elif '/recommendations/' in request.path %}
+            <h1 class="book-title">Книги, рекомендованные вам</h1>
         {% else %}
             <h1 class="book-title">Книги</h1>
         {% endif %}
@@ -42,7 +58,15 @@
                         <p class="card-text">
                             <a href="{% url 'books:author' book.author.id %}">{{ book.author.shortname }}</a>
                         </p>
-                        <p class="card-text text-muted">{{ book.release_year }}</p>
+                        <p class="card-text text-muted">
+                            {{ book.release_year }}
+{#                        score книги, на время разработки  #}
+                            {% if '/recommendations/' in request.path and book.recommend_score %}
+                            <span style="color: #888; font-size: 0.9em; margin-left: 8px;">
+                                (score: {{ book.recommend_score|floatformat:2 }})
+                            </span>
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -63,12 +87,43 @@
             <i class="bi bi-pencil-square"></i>
             Изменить жанр
         </button>
-    {% endif %}
+    {% else %}
         <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:book_create' %}'">
             <i class="bi bi-plus"></i>
             Добавить книгу
         </button>
     {% endif %}
+    {% endif %}
+        <h5>Сортировка</h5>
+        {% if '/recommendations/' in request.path %}
+        <li class="btn sort-btn">
+            <a href="?sort=score&dir={% if current_sort == 'score' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
+                По релевантности
+                {% if current_sort == "score" %}
+                    <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        <ul class="list-group">
+            <li class="btn sort-btn">
+                <a href="?sort=title&dir={% if current_sort == 'title' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
+                    По названию
+                    {% if current_sort == "title" %}
+                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="btn sort-btn">
+                <a href="?sort=release_year&dir={% if current_sort == 'release_year' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
+                    По году выхода
+                    {% if current_sort == "release_year" %}
+                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
+                    {% endif %}
+                </a>
+            </li>
+        </ul>
+
         <h5>Фильтры</h5>
         <ul class="list-group mb-4">
             {% for genre in genre_list %}
@@ -76,12 +131,6 @@
                 <a href="?genre={{ genre.slug }}">{{ genre.genre }}</a>
             </li>
             {% endfor %}
-        </ul>
-
-        <h5>Сортировка</h5>
-        <ul class="list-group">
-            <li class="list-group-item"><a href="?sort=title">По названию</a></li>
-            <li class="list-group-item"><a href="?sort=release_year">По году выхода</a></li>
         </ul>
     </div>
 
