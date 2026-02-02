@@ -1,4 +1,4 @@
-from django.db.models import Avg, Count, Q, F
+from django.db.models import Avg, Count, Q, F, Case, When, IntegerField
 from books.models import Genre, Author, Book
 
 
@@ -56,7 +56,7 @@ def book_score(book, genre_prefs, author_prefs):
     return score
 
 
-def recommend_books(user, min_score=1.1):
+def recommend_books(user, sort="score", direction="desc", min_score=1.1):
     genre_prefs = genre_preferences(user)
     author_prefs = author_preferences(user)
 
@@ -65,15 +65,6 @@ def recommend_books(user, min_score=1.1):
 
     books = candidate_books(user, genre_prefs, author_prefs)
 
-    # scored = []
-    # for book in books:
-    #     score = book_score(book, genre_prefs, author_prefs)
-    #     if score >= min_score:
-    #         scored.append((book, score))
-    #
-    # scored.sort(key=lambda x: x[1], reverse=True)
-    #
-    # return [book for book, score in scored]
     result = []
     for book in books:
         score = book_score(book, genre_prefs, author_prefs)
@@ -81,4 +72,24 @@ def recommend_books(user, min_score=1.1):
             book.recommend_score = score
             result.append(book)
 
-    return result
+    if not result:
+        return Book.objects.none()
+
+    # ← Здесь применяем сортировку по переданным параметрам
+    reverse = direction == "desc"
+
+    if sort == "score":
+        result.sort(key=lambda b: (getattr(b, 'recommend_score', 0), b.id), reverse=reverse)
+    elif sort == "title":
+        result.sort(key=lambda b: b.title.lower(), reverse=reverse)
+    elif sort == "release_year":
+        result.sort(key=lambda b: b.release_year or 0, reverse=reverse)
+
+    sorted_pks = [book.pk for book in result]
+
+    preserved = Case(
+        *[When(pk=pk, then=pos) for pos, pk in enumerate(sorted_pks)],
+        output_field=IntegerField()
+    )
+
+    return Book.objects.filter(pk__in=sorted_pks).order_by(preserved)

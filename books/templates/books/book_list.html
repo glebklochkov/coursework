@@ -1,5 +1,6 @@
 {% extends "../base.html" %}
 {% load static %}
+{% load query_tags %}
 
 {% block title %}
 {% if '/author/' in request.path %}
@@ -97,7 +98,13 @@
         <h5>Сортировка</h5>
         {% if '/recommendations/' in request.path %}
         <li class="btn sort-btn">
-            <a href="?sort=score&dir={% if current_sort == 'score' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
+{#            <a href="?sort=score&dir={% if current_sort == 'score' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
+{#                По релевантности#}
+{#                {% if current_sort == "score" %}#}
+{#                    <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
+{#                {% endif %}#}
+{#            </a>#}
+            <a href="?{% query_transform sort='score' dir=score_next_dir %}">
                 По релевантности
                 {% if current_sort == "score" %}
                     <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
@@ -107,7 +114,13 @@
         {% endif %}
         <ul class="list-group">
             <li class="btn sort-btn">
-                <a href="?sort=title&dir={% if current_sort == 'title' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
+{#                <a href="?sort=title&dir={% if current_sort == 'title' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
+{#                    По названию#}
+{#                    {% if current_sort == "title" %}#}
+{#                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
+{#                    {% endif %}#}
+{#                </a>#}
+                <a href="?{% query_transform sort='title' dir=title_next_dir %}">
                     По названию
                     {% if current_sort == "title" %}
                         <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
@@ -115,23 +128,50 @@
                 </a>
             </li>
             <li class="btn sort-btn">
-                <a href="?sort=release_year&dir={% if current_sort == 'release_year' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">
+{#                <a href="?sort=release_year&dir={% if current_sort == 'release_year' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
+{#                    По году выхода#}
+{#                    {% if current_sort == "release_year" %}#}
+{#                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
+{#                    {% endif %}#}
+{#                </a>#}
+                <a href="?{% query_transform sort='release_year' dir=year_next_dir %}">
                     По году выхода
                     {% if current_sort == "release_year" %}
                         <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
                     {% endif %}
                 </a>
             </li>
+{#            <li class="btn sort-btn">#}
+{#                <a href="?sort=average_rating&dir={% if current_sort == 'average_rating' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
+{#                    По рейтингу#}
+{#                    {% if current_sort == "average_rating" %}#}
+{#                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
+{#                    {% endif %}#}
+{#                </a>#}
+{#            </li>#}
         </ul>
 
-        <h5>Фильтры</h5>
-        <ul class="list-group mb-4">
-            {% for genre in genre_list %}
-            <li class="list-group-item">
-                <a href="?genre={{ genre.slug }}">{{ genre.genre }}</a>
-            </li>
-            {% endfor %}
-        </ul>
+        <form method="get" class="mb-4">
+        {% for field in filter.form %}
+            <div class="mb-4 filter-group">
+                <h5>{{ field.label }}</h5>
+
+                <!-- Поиск внутри списка -->
+                <input type="text"
+                       class="form-control form-control-sm mb-2 filter-search-input"
+                       placeholder="Поиск..."
+                       data-target="{{ field.name }}-list">
+
+                <!-- Контейнер с прокруткой -->
+                <div class="filter-scroll-container" id="{{ field.name }}-list">
+                    {{ field }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="body-btn">Применить</button>
+        <a href="{{ request.path }}" class="body-btn ms-2">Сбросить</a>
+        </form>
     </div>
 
 {% if page_obj.has_next %}

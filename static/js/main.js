@@ -152,6 +152,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// фильтры
+// Универсальный поиск внутри множественных списков
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.filter-search-input').forEach(input => {
+        input.addEventListener('input', function () {
+            const filterValue = this.value.toLowerCase().trim();
+            const targetId = this.dataset.target;
+            const container = document.getElementById(targetId);
+
+            if (!container) return;
+
+            const labels = container.querySelectorAll('label');
+
+            labels.forEach(label => {
+                const text = label.textContent.toLowerCase();
+                label.style.display = text.includes(filterValue) ? '' : 'none';
+            });
+        });
+
+        // Очистка при фокусе (опционально)
+        input.addEventListener('focus', function () {
+            if (this.value === '') {
+                // можно сбросить видимость всех, но обычно не нужно
+            }
+        });
+    });
+
+    // Опционально: авто-сабмит формы при смене чекбокса
+    // document.querySelectorAll('.filter-scroll-container input[type="checkbox"]').forEach(chk => {
+    //     chk.addEventListener('change', () => {
+    //         chk.closest('form').submit();
+    //     });
+    // });
+});
 
 
 

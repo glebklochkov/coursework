@@ -5,28 +5,37 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from django_filters.views import FilterView
 
 from books.forms import BookForm, AuthorForm, GenreForm
-from books.management.recommendations.recommendations import recommend_books
+from books.management.services.filters import BookFilter
+from books.management.services.recommendations import recommend_books
 from books.models import Book, Author, Genre, BookRating
 
 
-class BooksListView(ListView):
+class BooksListView(FilterView):
     model = Book
     context_object_name = 'book_list'
     paginate_by = 40
-    template_name = 'books/book_list.html'  # можно переопределять в url
+    template_name = 'books/book_list.html'
+    filterset_class = BookFilter
+
+    # def get_filterset_kwargs(self, filterset_class):
+    #     kwargs = super().get_filterset_kwargs(filterset_class)
+    #
+    #     # Передаём именно тот queryset, который уже сформирован в get_queryset()
+    #     # (это уже закладки, прочитанные, рекомендации и т.д.)
+    #     kwargs['queryset'] = self.get_queryset()
+    #
+    #     return kwargs
 
     def get_queryset(self):
+        if self.request.resolver_match.url_name == 'recommendations':
+            sort = self.request.GET.get("sort", "score")
+            direction = self.request.GET.get("dir", "desc")
+            return recommend_books(self.request.user, sort=sort, direction=direction)
+
         queryset = Book.objects.all()
-
-        genre = self.kwargs.get("genre_slug")
-        if genre:
-            queryset = queryset.filter(genres__slug=genre)
-
-        author = self.kwargs.get("author_id")
-        if author:
-            queryset = queryset.filter(author__id=author)
 
         if self.request.resolver_match.url_name == "saved_books":
             user_id = self.kwargs.get('pk')
@@ -40,28 +49,8 @@ class BooksListView(ListView):
             user_id = self.kwargs.get('pk')
             user = get_object_or_404(get_user_model(), id=user_id)
             queryset = user.rated_books.all()
-        elif self.request.resolver_match.url_name == 'recommendations':
-            queryset = recommend_books(self.request.user)
-            sort = self.request.GET.get("sort", "score")
-            direction = self.request.GET.get("dir", "desc")
-            # reverse = direction == "desc"
-            if sort == "score":
-                queryset.sort(
-                    key=lambda b: (getattr(b, 'recommend_score', 0), b.id),
-                    reverse=(direction == "desc")
-                )
-            elif sort == "title":
-                queryset.sort(
-                    key=lambda b: b.title.lower(),
-                    reverse=(direction == "desc")
-                )
-            elif sort == "release_year":
-                queryset.sort(
-                    key=lambda b: b.release_year or 0,
-                    reverse=(direction == "desc")
-                )
-            return queryset
 
+        # Сортировка по GET (для обычных списков)
         sort = self.request.GET.get("sort", "title")
         direction = self.request.GET.get("dir", "asc")
         allowed_sorts = {
@@ -77,6 +66,7 @@ class BooksListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["filter"] = self.filterset
 
         if self.kwargs.get("genre_slug"):
             genre = get_object_or_404(Genre, slug=self.kwargs.get('genre_slug'))
@@ -86,11 +76,21 @@ class BooksListView(ListView):
             context['author'] = author
 
         if self.request.resolver_match.url_name == 'recommendations':
-            context["current_sort"] = self.request.GET.get("sort", "score")
-            context["current_dir"] = self.request.GET.get("dir", "desc")
+            current_sort = self.request.GET.get("sort", "score")
+            current_dir = self.request.GET.get("dir", "desc")
+            context[
+                "current_sort"] = current_sort
+            context["current_dir"] = current_dir
         else:
-            context["current_sort"] = self.request.GET.get("sort", "title")
-            context["current_dir"] = self.request.GET.get("dir", "asc")
+            current_sort = self.request.GET.get("sort", "title")
+            current_dir = self.request.GET.get("dir", "asc")
+            context["current_sort"] = current_sort
+            context["current_dir"] = current_dir
+
+        # Вычисляем следующее направление для каждой кнопки
+        context["title_next_dir"] = "desc" if current_sort == "title" and current_dir == "asc" else "asc"
+        context["year_next_dir"] = "desc" if current_sort == "release_year" and current_dir == "asc" else "asc"
+        context["score_next_dir"] = "desc" if current_sort == "score" and current_dir == "asc" else "asc"
 
         return context
 
