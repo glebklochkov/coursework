@@ -123,12 +123,6 @@
         {% endif %}
         <ul class="list-group">
             <li class="btn sort-btn">
-{#                <a href="?sort=title&dir={% if current_sort == 'title' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
-{#                    По названию#}
-{#                    {% if current_sort == "title" %}#}
-{#                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
-{#                    {% endif %}#}
-{#                </a>#}
                 <a href="?{% query_transform sort='title' dir=title_next_dir %}">
                     По названию
                     {% if current_sort == "title" %}
@@ -137,12 +131,22 @@
                 </a>
             </li>
             <li class="btn sort-btn">
-{#                <a href="?sort=release_year&dir={% if current_sort == 'release_year' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
-{#                    По году выхода#}
-{#                    {% if current_sort == "release_year" %}#}
-{#                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
-{#                    {% endif %}#}
-{#                </a>#}
+                <a href="?{% query_transform sort='avg_rating' dir=avg_rating_next_dir %}">
+                    По рейтингу
+                    {% if current_sort == "avg_rating" %}
+                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="btn sort-btn">
+                <a href="?{% query_transform sort='ratings_count' dir=ratings_count_next_dir %}">
+                    По кол-ву оценок
+                    {% if current_sort == "ratings_count" %}
+                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="btn sort-btn">
                 <a href="?{% query_transform sort='release_year' dir=year_next_dir %}">
                     По году выхода
                     {% if current_sort == "release_year" %}
@@ -150,14 +154,6 @@
                     {% endif %}
                 </a>
             </li>
-{#            <li class="btn sort-btn">#}
-{#                <a href="?sort=average_rating&dir={% if current_sort == 'average_rating' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
-{#                    По рейтингу#}
-{#                    {% if current_sort == "average_rating" %}#}
-{#                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
-{#                    {% endif %}#}
-{#                </a>#}
-{#            </li>#}
         </ul>
 
         <form method="get" class="mb-4">

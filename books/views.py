@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Case, When, Value, IntegerField
+from django.db.models import Q, Case, When, Value, IntegerField, Avg, Count
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -31,12 +31,12 @@ class BooksListView(FilterView):
     #     return kwargs
 
     def get_queryset(self):
+        queryset = Book.objects.all()
+
         if self.request.resolver_match.url_name == 'recommendations':
             sort = self.request.GET.get("sort", "score")
             direction = self.request.GET.get("dir", "desc")
             return recommend_books(self.request.user, sort=sort, direction=direction)
-
-        queryset = Book.objects.all()
 
         # Поиск по q (глобальный поиск из шапки)
         q = self.request.GET.get('q')
@@ -61,7 +61,7 @@ class BooksListView(FilterView):
 
             return queryset.order_by('search_priority', 'title')
 
-
+        # для страниц с авторами и жанрами
         genre_slug = self.kwargs.get("genre_slug")
         if genre_slug:
             genre = get_object_or_404(Genre, slug=genre_slug)
@@ -85,12 +85,19 @@ class BooksListView(FilterView):
             user = get_object_or_404(get_user_model(), id=user_id)
             queryset = user.rated_books.all()
 
+        queryset = queryset.annotate(
+            avg_rating=Avg('ratings__value'),
+            ratings_count=Count('ratings')
+        )
+
         # Сортировка по GET (для обычных списков)
         sort = self.request.GET.get("sort", "title")
         direction = self.request.GET.get("dir", "asc")
         allowed_sorts = {
             "title": "title",
             "release_year": "release_year",
+            "avg_rating": "avg_rating",
+            "ratings_count": "ratings_count",
         }
         sort_field = allowed_sorts.get(sort, "title")
         if direction == "desc":
@@ -124,10 +131,17 @@ class BooksListView(FilterView):
 
         # Вычисляем следующее направление для каждой кнопки
         context["title_next_dir"] = "desc" if current_sort == "title" and current_dir == "asc" else "asc"
-        context["year_next_dir"] = "desc" if current_sort == "release_year" and current_dir == "asc" else "asc"
-        context["score_next_dir"] = "desc" if current_sort == "score" and current_dir == "asc" else "asc"
+        context["year_next_dir"] = "asc" if current_sort == "release_year" and current_dir == "desc" else "desc"
+        context["score_next_dir"] = "asc" if current_sort == "score" and current_dir == "desc" else "desc"
+        context["avg_rating_next_dir"] = "asc" if current_sort == "avg_rating" and current_dir == "desc" else "desc"
+        context["ratings_count_next_dir"] = "asc" if current_sort == "ratings_count" and current_dir == "desc" else "desc"
 
         return context
+
+    def get_filterset_kwargs(self, filterset_class):
+        kwargs = super().get_filterset_kwargs(filterset_class)
+        kwargs['request'] = self.request
+        return kwargs
 
 
 class BookMixin:
