@@ -1,6 +1,7 @@
 # books/filters.py
 import django_filters
 from django import forms
+from django.shortcuts import get_object_or_404
 
 from books.models import Author, Book, Genre
 
@@ -23,3 +24,16 @@ class BookFilter(django_filters.FilterSet):
     class Meta:
         model = Book
         fields = ['author', 'genre']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if 'genre_slug' in self.request.resolver_match.kwargs:
+            genre = get_object_or_404(Genre, slug=self.request.resolver_match.kwargs['genre_slug'])
+            self.filters['genre'].field.queryset = Genre.objects.filter(id=genre.id)  # только этот жанр
+            self.filters['genre'].field.widget.attrs['disabled'] = 'disabled'  # заблокировать чекбокс
+
+        if 'author_id' in self.request.resolver_match.kwargs:
+            author = get_object_or_404(Author, id=self.request.resolver_match.kwargs['author_id'])
+            self.filters['author'].field.queryset = Author.objects.filter(id=author.id)
+            self.filters['author'].field.widget.attrs['disabled'] = 'disabled'

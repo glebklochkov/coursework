@@ -37,6 +37,15 @@
             <h1 class="book-title">Оценённые книги</h1>
         {% elif '/recommendations/' in request.path %}
             <h1 class="book-title">Книги, рекомендованные вам</h1>
+        {% elif request.GET.q %}
+            {% if book_list %}
+            <h5 class="book-title">Результаты поиска по запросу: «{{ request.GET.q }}»
+                <a style="font-weight: normal;" href="{{ request.path }}" class="body-btn ms-2">Очистить поиск</a></h5>
+            {% else %}
+                <p class="book-title">По запросу «{{ request.GET.q }}» ничего не найдено.
+                    <a style="font-weight: normal;" href="{{ request.path }}" class="body-btn ms-2">Очистить поиск</a></p>
+            {% endif %}
+{#            <a href="{{ request.path }}" class="body-btn ms-2">Очистить поиск</a>#}
         {% else %}
             <h1 class="book-title">Книги</h1>
         {% endif %}

@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Case, When, Value, IntegerField
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -36,6 +37,40 @@ class BooksListView(FilterView):
             return recommend_books(self.request.user, sort=sort, direction=direction)
 
         queryset = Book.objects.all()
+
+        # Поиск по q (глобальный поиск из шапки)
+        q = self.request.GET.get('q')
+        if q:
+            queryset = queryset.filter(
+                Q(title__icontains=q) |
+                Q(author__fullname__icontains=q) |
+                Q(genres__genre__icontains=q) |
+                Q(description__icontains=q)
+            ).distinct()
+
+            queryset = queryset.annotate(
+                search_priority=Case(
+                    When(title__icontains=q, then=Value(1)),
+                    When(author__fullname__icontains=q, then=Value(2)),
+                    When(genres__genre__icontains=q, then=Value(3)),
+                    When(description__icontains=q, then=Value(4)),
+                    default=Value(5),
+                    output_field=IntegerField(),
+                )
+            )
+
+            return queryset.order_by('search_priority', 'title')
+
+
+        genre_slug = self.kwargs.get("genre_slug")
+        if genre_slug:
+            genre = get_object_or_404(Genre, slug=genre_slug)
+            queryset = queryset.filter(genres=genre)  # ← фиксируем жанр
+
+        author_id = self.kwargs.get("author_id")
+        if author_id:
+            author = get_object_or_404(Author, id=author_id)
+            queryset = queryset.filter(author=author)  # ← фиксируем автора
 
         if self.request.resolver_match.url_name == "saved_books":
             user_id = self.kwargs.get('pk')
