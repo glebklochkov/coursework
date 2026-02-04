@@ -67,8 +67,14 @@ WSGI_APPLICATION = 'coursework.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'coursework_db',
+        'USER': 'postgres',
+        'PASSWORD': 'Hype-jk57',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
