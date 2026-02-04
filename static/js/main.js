@@ -178,14 +178,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    // Опционально: авто-сабмит формы при смене чекбокса
-    // document.querySelectorAll('.filter-scroll-container input[type="checkbox"]').forEach(chk => {
-    //     chk.addEventListener('change', () => {
-    //         chk.closest('form').submit();
-    //     });
-    // });
 });
+
+
+function handleImageError(image) {
+    // 1. Скрываем само битое изображение
+    image.style.display = 'none';
+
+    // 2. Ищем ближайший контейнер (это может быть ссылка или div)
+    const container = image.parentElement;
+
+    // 3. Находим внутри этого контейнера заглушку
+    const fallback = container.querySelector('.fallback-poster');
+
+    if (fallback) {
+        fallback.classList.remove('d-none');
+        // Дополнительно: если у контейнера есть специфические стили для пустого состояния
+        fallback.style.display = 'flex';
+    }
+}
 
 
 
