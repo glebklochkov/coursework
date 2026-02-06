@@ -6,7 +6,8 @@ from books.views import toggle_saved, toggle_read
 app_name = 'books'
 
 urlpatterns = [
-    path('', views.BooksListView.as_view(), name='index'),
+    path('', views.IndexView.as_view(), name='index'),
+    path('books/', views.BooksListView.as_view(), name='books'),
     path('recommendations/', views.BooksListView.as_view(), name='recommendations'),
     path('book/create/', views.BookCreateView.as_view(), name='book_create'),
     path('book/<int:pk>/', views.BookDetailView.as_view(), name='detail'),

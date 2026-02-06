@@ -5,13 +5,28 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_POST
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView, TemplateView
 from django_filters.views import FilterView
 
 from books.forms import BookForm, AuthorForm, GenreForm
 from books.management.services.filters import BookFilter
 from books.management.services.recommendations import recommend_books
 from books.models import Book, Author, Genre, BookRating
+from users.models import User
+
+
+class IndexView(TemplateView):
+    template_name = 'books/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["books_count"] = Book.objects.count()
+        context['authors_count'] = Author.objects.count()
+        context['genres_count'] = Genre.objects.count()
+        context['users_count'] = User.objects.count()
+
+        return context
 
 
 class BooksListView(FilterView):
