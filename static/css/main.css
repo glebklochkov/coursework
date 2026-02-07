@@ -99,6 +99,103 @@ a:hover {
 /*    color: #250f00;*/
 /*}*/
 
+/*=== Главная страница ===*/
+.main-page-img {
+    width: 130px;         /* Отрегулируйте ширину под ваш PNG */
+    height: auto;        /* Сохраняет пропорции */
+    display: block;      /* Чтобы работало центрирование */
+    margin: 0 auto;      /* Центрируем картинку */
+    margin-top: -3rem;
+}
+
+/* Стили для карточек функций на главной */
+.feature-card {
+    border: 2px solid #250f00 !important; /* Исправлена ошибка с точкой с запятой */
+    /*background-color: transparent !important;*/
+    transition: none !important;
+    /*box-shadow: none !important; !* Убираем тень по умолчанию *!*/
+}
+
+.feature-card .card-body > i.bi {
+    color: #250f00 !important;
+    display: inline-block;
+    margin-bottom: 5px; /* Немного опустим саму иконку */
+}
+
+/* 3. Убираем отступ у заголовка, чтобы поднять его выше к иконке */
+.custom-card-title {
+    margin-top: 0.2rem !important; /* Минимальный отступ сверху */
+    margin-bottom: 0.5rem;
+}
+
+.lead,
+section p:not(.feature-card p) {
+    color: #000000 !important;
+    font-family: 'Arial', sans-serif; /* Более толстые и широкие буквы */
+    font-size: 1.2rem;   /* Увеличили размер */
+    font-weight: 500;    /* Сделали чуть плотнее */
+    line-height: 1.7;
+}
+
+/* Отключаем любые эффекты при наведении для этих карточек */
+.feature-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: #250f00 !important;
+}
+
+.feature-card h1, h2 {
+    color: #250f00 !important;
+    margin-top: -1.5rem;
+}
+
+.feature-card h3, h4 i {
+    color: #250f00 !important;
+}
+
+.feature-card h5, .square-stat-number {
+    color: #250f00 !important;
+    font-size: 1.2rem;
+}
+
+.feature-card p,
+.feature-card .text-muted,
+.lead,
+section p {
+    color: #000000 !important;
+    /*opacity: 1 !important; !* Убираем прозрачность, если была *!*/
+    font-size: 1.05rem; /* Делаем текст чуть крупнее для выразительности */
+    /*line-height: 1.6;*/
+}
+
+/* Мотивационный текст (цитата) */
+.fancy-text {
+    font-style: italic;
+    color: #000000 !important; /* Текст цитаты тоже черный */
+    position: relative;
+    display: inline-block;
+    padding: 0 30px;
+    font-size: 1.25rem;
+}
+
+
+
+/* Дополнительная настройка для кнопки на главной */
+.main-btn.fs-5 {
+    width: auto; /* Чтобы кнопка не растягивалась на весь экран */
+    min-width: 250px;
+    box-shadow: 0 4px 15px rgba(37, 15, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+/* Если в карточках есть вспомогательный текст с классом text-muted,
+   сделаем его чуть прозрачным белым для красоты */
+.feature-card .text-muted {
+    opacity: 0.8;
+}
+
 /* каточки книг */
 .card {
     border-radius: 0.7rem;
@@ -971,6 +1068,77 @@ ul.list-group {
 
 .square-stat-label i {
     font-size: 0.9rem;
+}
+
+/* === ФУТЕР === */
+/* Прижимаем футер к низу */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto; /* Растягивает контент, выталкивая футер вниз */
+}
+
+.main-footer {
+    flex-shrink: 0; /* Не дает футеру сжиматься */
+}
+
+.main-footer {
+    background-color: #250f00;
+    color: #f5ebca;
+    height: 140px;            /* Уменьшили высоту со 150px */
+    display: flex;
+    flex-direction: column;   /* Позволяет элементам встать друг под друга */
+    align-items: center;
+    justify-content: center;
+    border-top: 2px solid #684a33;
+    padding: 1rem 0;          /* Добавили небольшой внутренний отступ */
+}
+
+.social-link {
+    color: #f5ebca;
+    text-decoration: none;
+    margin: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;  /* Центрируем SVG внутри ссылки */
+    vertical-align: middle;   /* Выравниваем ссылки по одной линии */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-link svg {
+    width: 36px;              /* Чуть уменьшили, чтобы не было громоздко */
+    height: 36px;
+    fill: currentColor;
+    display: block;           /* Убирает лишние отступы снизу */
+}
+
+/* Наведение для ВК и ТГ (можно добавить фирменные цвета) */
+.social-link:hover {
+    color: #ddb082;
+}
+
+
+.footer-divider {
+    color: #684a33;
+    margin: 0 8px;
+}
+
+.footer-links a {
+    color: #ddb082;
+    text-decoration: none;
+    font-size: 0.85rem;       /* Немного уменьшили шрифт для компактности */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #ffffff; /* Белый при наведении */
 }
 
 /* Адаптивность */

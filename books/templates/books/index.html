@@ -10,8 +10,8 @@
 
     <!-- Описание сайта -->
     <section class="mb-5">
-        <i class="bi bi-book fs-1 mb-3 text-muted"></i>
-        <h1 class="mb-3">Погрузитесь в удивительный мир книг</h1>
+        <img src="{% static 'img/logo.png' %}" alt="Logo" class="main-page-img mb-3">
+        <h1 class="mb-3" style="color: #250f00">Погрузитесь в удивительный мир книг</h1>
        <p class="lead text-muted">
              Книги — это не просто истории. Это путешествия, идеи, эмоции и вопросы, которые остаются с нами надолго.
              Это пространство для мыслей, наблюдений и внутренних диалогов. Иногда они помогают лучше понять мир,
@@ -30,10 +30,10 @@
     <div class="row justify-content-center g-4">
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm feature-card">
                 <div class="card-body">
                     <i class="bi bi-search fs-2"></i>
-                    <h5 class="mt-3">Выбор книг</h5>
+                    <h5 class="custom-card-title">Выбор книг</h5>
                     <p class="text-muted">
                         Путешествуйте по каталогу, открывая авторов и жанры,
                         которые окажутся вам по-настоящему интересны
@@ -43,10 +43,10 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm feature-card">
                 <div class="card-body">
                     <i class="bi bi-funnel-fill fs-2"></i>
-                    <h5 class="mt-3">Сортировка и фильтрация</h5>
+                    <h5 class="custom-card-title">Сортировка и фильтрация</h5>
                     <p class="text-muted">
                         Наводите порядок в многообразии книг,
                         выбирая только то, что хочется именно вам
@@ -56,10 +56,10 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm feature-card">
                 <div class="card-body">
                     <i class="bi bi-star-fill fs-2"></i>
-                    <h5 class="mt-3">Оценки</h5>
+                    <h5 class="custom-card-title">Оценки</h5>
                     <p class="text-muted">
                         Делитесь впечатлениями и отмечайте,
                         какое место книга заняла на вашей полке
@@ -69,10 +69,10 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm feature-card">
                 <div class="card-body">
                     <i class="bi bi-bookmark-fill fs-2"></i>
-                    <h5 class="mt-3">Закладки</h5>
+                    <h5 class="custom-card-title">Закладки</h5>
                     <p class="text-muted">
                         Сохраняйте книги, к которым хочется вернуться,
                         даже если сейчас не время.
@@ -82,10 +82,10 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm feature-card">
                 <div class="card-body">
                     <i class="bi bi-check2-circle fs-2"></i>
-                    <h5 class="mt-3">Прочитанные книги</h5>
+                    <h5 class="custom-card-title">Прочитанные книги</h5>
                     <p class="text-muted">
                         Отмечайте прочитанные книги
                         и наблюдайте, как растёт ваша читательский опыт
@@ -95,10 +95,10 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm feature-card">
                 <div class="card-body">
                     <i class="bi bi-lightbulb-fill fs-2"></i>
-                    <h5 class="mt-3">Рекомендации</h5>
+                    <h5 class="custom-card-title">Рекомендации</h5>
                     <p class="text-muted">
                         Получайте персональные подборки книг,
                         которые не оставят вас равнодушными
@@ -117,7 +117,7 @@
     <div class="row justify-content-center g-4">
 
         <div class="col-md-3 col-sm-6">
-            <div class="card h-100 shadow-sm border-0">
+            <div class="card h-100 shadow-sm border-0 feature-card">
                 <div class="card-body text-center">
 
                     <h3 class="mt-2">{{ books_count }}</h3>
@@ -127,7 +127,7 @@
         </div>
 
         <div class="col-md-3 col-sm-6">
-            <div class="card h-100 shadow-sm border-0">
+            <div class="card h-100 shadow-sm border-0 feature-card">
                 <div class="card-body text-center">
                     <h3 class="mt-2">{{ authors_count }}</h3>
                     <h5 class="text-muted mb-0"><i class="bi bi-pencil"></i> Авторов</h5>
@@ -136,7 +136,7 @@
         </div>
 
         <div class="col-md-3 col-sm-6">
-            <div class="card h-100 shadow-sm border-0">
+            <div class="card h-100 shadow-sm border-0 feature-card">
                 <div class="card-body text-center">
                     <h3 class="mt-2">{{ genres_count }}</h3>
                     <h5 class="text-muted mb-0"><i class="bi bi-feather"></i> Жанров</h5>
@@ -145,7 +145,7 @@
         </div>
 
         <div class="col-md-3 col-sm-6">
-            <div class="card h-100 shadow-sm border-0">
+            <div class="card h-100 shadow-sm border-0 feature-card">
                 <div class="card-body text-center">
                     <h3 class="mt-2">{{ users_count }}</h3>
                     <h5 class="text-muted mb-0"><i class="bi bi-person-circle"></i> Пользователей</h5>
@@ -167,7 +167,7 @@
 
     <!-- Кнопки -->
     <section class="mb-5">
-        <a href="{% url 'books:books' %}" class="btn btn-outline-primary btn-lg me-3">
+        <a href="{% url 'books:books' %}" class="body-btn py-2 px-3 fs-5"">
             Перейти в каталог
         </a>
     </section>

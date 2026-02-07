@@ -99,14 +99,15 @@
 
 
             <div class="profile-info-item">
+                <div class="profile-info-left">
                 <i class="bi bi-feather"></i>
-                <span>
-                    Жанры:
+                <span>Жанры:
                     {% for genre in book.genres.all %}
                     <a href="{% url 'books:genre' genre.slug %}" class="book-genre">{{ genre.genre }}</a>
                     {% if not forloop.last %} {% endif %}
                 {% endfor %}
                 </span>
+                </div>
             </div>
         </div>
 

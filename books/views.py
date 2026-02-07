@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Case, When, Value, IntegerField, Avg, Count
+from django.db.models import Q, Case, When, Value, IntegerField, Avg, Count, F
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -114,9 +114,13 @@ class BooksListView(FilterView):
             "avg_rating": "avg_rating",
             "ratings_count": "ratings_count",
         }
-        sort_field = allowed_sorts.get(sort, "title")
+        field_name = allowed_sorts.get(sort, "title")
         if direction == "desc":
-            sort_field = f"-{sort_field}"
+            # Сначала большие рейтинги, пустые — в конце
+            sort_field = F(field_name).desc(nulls_last=True)
+        else:
+            # Сначала маленькие рейтинги, пустые — всё равно в конце
+            sort_field = F(field_name).asc(nulls_first=True)
         queryset = queryset.order_by(sort_field)
 
         return queryset
