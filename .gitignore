@@ -1,0 +1,7 @@
+venv/
+.venv/
+env/
+ENV/
+sent_emails/
+**/migrations/[0-9]*.py
+db.sqlite3
