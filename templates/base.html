@@ -3,27 +3,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+
+    <!-- 1. ПОДКЛЮЧАЕМ CSS ТОЙ ЖЕ ВЕРСИИ, ЧТО И СКРИПТ (5.3.0) -->
+    <!-- Если хочешь использовать локальный файл, убедись, что он обновлен до v5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Твои стили и иконки -->
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
-
-    <title>
-      {% block title %}{% endblock %}
-    </title>
+    <!-- 2. СКРИПТЫ ДОЛЖНЫ БЫТЬ ВНУТРИ <head> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {% block extra_js %}{% endblock %}
 </head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-{% block extra_js %}{% endblock %}
+
 <body>
     {% include "includes/header.html" %}
+    
     <main>
         <div class="container py-5">
-        {% block content %}{% endblock %}
-      </div>
+            {% block content %}{% endblock %}
+        </div>
     </main>
+    
     {% include "includes/footer.html" %}
+    
+    <!-- 3. Скрипт Bootstrap 5 остается перед закрывающим </body> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

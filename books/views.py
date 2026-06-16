@@ -80,12 +80,12 @@ class BooksListView(FilterView):
         genre_slug = self.kwargs.get("genre_slug")
         if genre_slug:
             genre = get_object_or_404(Genre, slug=genre_slug)
-            queryset = queryset.filter(genres=genre)  # ← фиксируем жанр
+            queryset = queryset.filter(genres=genre)
 
         author_id = self.kwargs.get("author_id")
         if author_id:
             author = get_object_or_404(Author, id=author_id)
-            queryset = queryset.filter(author=author)  # ← фиксируем автора
+            queryset = queryset.filter(author=author)
 
         if self.request.resolver_match.url_name == "saved_books":
             user_id = self.kwargs.get('pk')
@@ -105,7 +105,7 @@ class BooksListView(FilterView):
             ratings_count=Count('ratings')
         )
 
-        # Сортировка по GET (для обычных списков)
+        # Сортировка
         sort = self.request.GET.get("sort", "title")
         direction = self.request.GET.get("dir", "asc")
         allowed_sorts = {

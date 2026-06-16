@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'books',
     'users',
     'django_filters',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

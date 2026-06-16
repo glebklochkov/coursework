@@ -10,20 +10,19 @@ class Command(BaseCommand):
     help = "Поиск и загрузка недостающих обложек через Google Books API"
 
     def handle(self, *args, **options):
-        # Берем только те книги, у которых нет обложки
+        # только те книги, у которых нет обложки
         books_without_poster = Book.objects.filter(poster__in=['', None])
         self.stdout.write(f"Найдено книг без обложки: {books_without_poster.count()}")
 
         for book in books_without_poster:
             self.stdout.write(self.style.NOTICE(f"Ищем обложку для: {book.title} ({book.author.fullname})"))
 
-            # Формируем запрос: "Название книги Автор"
             search_query = f"{book.title} {book.author.fullname}"
             url = "https://www.googleapis.com/books/v1/volumes"
             params = {
                 "q": search_query,
                 "maxResults": 1,
-                "langRestrict": "ru"  # отдаем приоритет русским изданиям
+                "langRestrict": "ru"  # приоритет русским изданиям
             }
 
             try:
@@ -38,20 +37,17 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.WARNING(f"Не найдено в Google Books: {book.title}"))
                     continue
 
-                # Извлекаем ссылку на изображение
                 volume_info = items[0].get("volumeInfo", {})
                 image_links = volume_info.get("imageLinks", {})
 
-                # Пробуем взять версию побольше (thumbnail), если нет — smallThumbnail
                 image_url = image_links.get("thumbnail") or image_links.get("smallThumbnail")
 
                 if image_url:
-                    # Google отдает http, лучше заменить на https
                     image_url = image_url.replace("http://", "https://")
 
                     img_resp = requests.get(image_url, timeout=10)
                     if img_resp.status_code == 200:
-                        # Проверка на размер (чтобы не качать пустые заглушки)
+                        # Проверка на размер
                         if len(img_resp.content) > 1000:
                             file_name = f"{book.id}_{slugify(book.title, allow_unicode=True)}.jpg"
                             book.poster.save(file_name, ContentFile(img_resp.content), save=True)
@@ -59,7 +55,6 @@ class Command(BaseCommand):
                         else:
                             self.stdout.write(self.style.WARNING(f"Слишком маленькое изображение для: {book.title}"))
 
-                # Небольшая пауза, чтобы не превысить лимиты API
                 time.sleep(1)
 
             except Exception as e:

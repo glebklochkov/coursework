@@ -22,7 +22,12 @@
 
 {% block content %}
 <div class="row">
-    <!-- Левый блок: карточки книг -->
+    <div class="col-12 d-lg-none mb-3">
+        <button class="body-btn w-100 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileFilters" aria-controls="mobileFilters">
+            <i class="bi bi-sliders"></i> Фильтры и сортировка
+        </button>
+    </div>
+
     <div class="col-lg-9">
         <div id="books-container" class="row g-4">
         {% if '/author/' in request.path %}
@@ -45,21 +50,14 @@
                 <p class="book-title">По запросу «{{ request.GET.q }}» ничего не найдено.
                     <a style="font-weight: normal;" href="{{ request.path }}" class="body-btn ms-2">Очистить поиск</a></p>
             {% endif %}
-{#            <a href="{{ request.path }}" class="body-btn ms-2">Очистить поиск</a>#}
         {% else %}
             <h1 class="book-title">Книги</h1>
         {% endif %}
+
             {% for book in book_list %}
-            <div class="col-md-6 col-lg-3">
+            <div class="col-6 col-md-4 col-lg-3">
                 <div class="card h-100">
                     <a href="{% url 'books:detail' book.id %}">
-{#                    {% if book.poster %}#}
-{#                        <img src="{{ book.poster.url }}" class="card-img-top" alt="{{ book.title }}">#}
-{#                    {% else %}#}
-{#                        <div class="card-poster-empty">#}
-{#                            <i class="bi bi-book"></i>#}
-{#                        </div>#}
-{#                    {% endif %}#}
                         {% if book.poster %}
                             <img src="{{ book.poster.url }}"
                                  class="card-img-top book-poster-img"
@@ -84,7 +82,6 @@
                         </p>
                         <p class="card-text text-muted">
                             {{ book.release_year }}
-{#                        score книги, на время разработки  #}
                             {% if '/recommendations/' in request.path and book.recommend_score %}
                             <span style="color: #888; font-size: 0.9em; margin-left: 8px;">
                                 (score: {{ book.recommend_score|floatformat:2 }})
@@ -98,44 +95,35 @@
         </div>
     </div>
 
-    <!-- Правый блок: фильтры и сортировки -->
-    <div class="col-lg-3">
-    {% if request.user.is_staff %}
-    {% if '/author/' in request.path %}
-        <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:author_edit' author.id %}'">
-            <i class="bi bi-pencil-square"></i>
-            Изменить автора
-        </button>
-    {% elif '/genre/' in request.path %}
-        <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:genre_edit' genre.slug %}'">
-            <i class="bi bi-pencil-square"></i>
-            Изменить жанр
-        </button>
-    {% else %}
-        <button type="button" class="body-btn" onclick="window.location.href='{% url 'books:book_create' %}'">
-            <i class="bi bi-plus"></i>
-            Добавить книгу
-        </button>
-    {% endif %}
-    {% endif %}
-        <h5>Сортировка</h5>
-        {% if '/recommendations/' in request.path %}
-        <li class="btn sort-btn">
-{#            <a href="?sort=score&dir={% if current_sort == 'score' and current_dir == 'asc' %}desc{% else %}asc{% endif %}">#}
-{#                По релевантности#}
-{#                {% if current_sort == "score" %}#}
-{#                    <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>#}
-{#                {% endif %}#}
-{#            </a>#}
-            <a href="?{% query_transform sort='score' dir=score_next_dir %}">
-                По релевантности
-                {% if current_sort == "score" %}
-                    <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
-                {% endif %}
-            </a>
-        </li>
+    <div class="col-lg-3 d-none d-lg-block">
+        {% if request.user.is_staff %}
+            {% if '/author/' in request.path %}
+                <button type="button" class="body-btn w-100 mb-3" onclick="window.location.href='{% url 'books:author_edit' author.id %}'">
+                    <i class="bi bi-pencil-square"></i> Изменить автора
+                </button>
+            {% elif '/genre/' in request.path %}
+                <button type="button" class="body-btn w-100 mb-3" onclick="window.location.href='{% url 'books:genre_edit' genre.slug %}'">
+                    <i class="bi bi-pencil-square"></i> Изменить жанр
+                </button>
+            {% else %}
+                <button type="button" class="body-btn w-100 mb-3" onclick="window.location.href='{% url 'books:book_create' %}'">
+                    <i class="bi bi-plus"></i> Добавить книгу
+                </button>
+            {% endif %}
         {% endif %}
-        <ul class="list-group">
+
+        <h5>Сортировка</h5>
+        <ul class="list-group mb-4">
+            {% if '/recommendations/' in request.path %}
+            <li class="btn sort-btn">
+                <a href="?{% query_transform sort='score' dir=score_next_dir %}">
+                    По релевантности
+                    {% if current_sort == "score" %}
+                        <i class="bi {% if current_dir == 'asc' %}bi-arrow-up{% else %}bi-arrow-down{% endif %}"></i>
+                    {% endif %}
+                </a>
+            </li>
+            {% endif %}
             <li class="btn sort-btn">
                 <a href="?{% query_transform sort='title' dir=title_next_dir %}">
                     По названию
@@ -174,35 +162,87 @@
         {% for field in filter.form %}
             <div class="mb-4 filter-group">
                 <h5>{{ field.label }}</h5>
-
-                <!-- Поиск внутри списка -->
                 <input type="text"
                        class="form-control form-control-sm mb-2 filter-search-input"
                        placeholder="Поиск..."
                        data-target="{{ field.name }}-list">
-
-                <!-- Контейнер с прокруткой -->
                 <div class="filter-scroll-container" id="{{ field.name }}-list">
                     {{ field }}
                 </div>
             </div>
         {% endfor %}
-
-        <button type="submit" class="body-btn">Применить</button>
-        <a href="{{ request.path }}" class="body-btn ms-2">Сбросить</a>
+        <button type="submit" class="body-btn w-100">Применить</button>
+        <a href="{{ request.path }}" class="body-btn w-100 d-block text-center mt-2">Сбросить</a>
         </form>
     </div>
+</div>
+
+<div class="offcanvas offcanvas-end d-lg-none" tabindex="-1" id="mobileFilters" aria-labelledby="mobileFiltersLabel" style="background-color: #f5ebca; width: 85%;">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="mobileFiltersLabel">Настройки поиска</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        {% if request.user.is_staff %}
+            {% if '/author/' in request.path %}
+                <button type="button" class="body-btn w-100 mb-3" onclick="window.location.href='{% url 'books:author_edit' author.id %}'">Изменить автора</button>
+            {% elif '/genre/' in request.path %}
+                <button type="button" class="body-btn w-100 mb-3" onclick="window.location.href='{% url 'books:genre_edit' genre.slug %}'">Изменить жанр</button>
+            {% else %}
+                <button type="button" class="body-btn w-100 mb-3" onclick="window.location.href='{% url 'books:book_create' %}'">Добавить книгу</button>
+            {% endif %}
+        {% endif %}
+
+        <h5>Сортировка</h5>
+        <ul class="list-group mb-4">
+            {% if '/recommendations/' in request.path %}
+            <li class="btn sort-btn">
+                <a href="?{% query_transform sort='score' dir=score_next_dir %}">По релевантности</a>
+            </li>
+            {% endif %}
+            <li class="btn sort-btn">
+                <a href="?{% query_transform sort='title' dir=title_next_dir %}">По названию</a>
+            </li>
+            <li class="btn sort-btn">
+                <a href="?{% query_transform sort='avg_rating' dir=avg_rating_next_dir %}">По рейтингу</a>
+            </li>
+            <li class="btn sort-btn">
+                <a href="?{% query_transform sort='ratings_count' dir=ratings_count_next_dir %}">По кол-ву оценок</a>
+            </li>
+            <li class="btn sort-btn">
+                <a href="?{% query_transform sort='release_year' dir=year_next_dir %}">По году выхода</a>
+            </li>
+        </ul>
+
+        <form method="get">
+        {% for field in filter.form %}
+            <div class="mb-4 filter-group">
+                <h5>{{ field.label }}</h5>
+                <!-- Добавили поле поиска для мобилки -->
+                <input type="text"
+                       class="form-control form-control-sm mb-2 filter-search-input"
+                       placeholder="Поиск..."
+                       data-target="mobile-{{ field.name }}-list">
+
+                <div class="filter-scroll-container" id="mobile-{{ field.name }}-list">
+                    {{ field }}
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit" class="body-btn w-100 py-2">Применить фильтры</button>
+        <a href="{{ request.path }}" class="body-btn w-100 d-block text-center mt-2 py-2">Сбросить</a>
+        </form>
+    </div>
+</div>
 
 {% if page_obj.has_next %}
 <div class="text-center mt-4">
-    <button id="load-more"
-            data-next="{{ page_obj.next_page_number }}"
-            class="body-btn btn">
+    <button id="load-more" data-next="{{ page_obj.next_page_number }}" class="body-btn btn">
         Загрузить ещё
     </button>
 </div>
 {% endif %}
-</div>
 
 <script src="{% static "js/main.js" %}"></script>
 {% endblock %}

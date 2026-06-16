@@ -1,103 +1,81 @@
 {% extends "../base.html" %}
 {% load static %}
 
-{% block title %}
-Профиль {{ user.username }}
-{% endblock %}
+{% block title %}Профиль {{ user.username }}{% endblock %}
 
 {% block content %}
 <div class="profile-page">
-<div class="row justify-content-center book-detail">
-    <div class="col-12 col-md-10 col-lg-8">
-        <div class="row g-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="row g-4">
+                <!-- Левая колонка: Аватар -->
+                <div class="col-12 col-md-4 text-center">
+                    <div class="profile-avatar-container d-inline-block">
+                        {% if user.avatar %}
+                            <div class="profile-avatar mb-3">
+                                <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
+                            </div>
+                        {% else %}
+                            <div class="profile-avatar-empty mb-3">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        {% endif %}
 
-            <!-- Левая колонка: аватар и кнопка -->
-            <div class="col-12 col-md-4">
-                <div class="profile-avatar-container">
-                {% if user.avatar %}
-                 <div class="profile-avatar mb-4">
-                    <img src="{{ user.avatar.url }}">
-                </div>
-                {% else %}
-                    <div class="profile-avatar-empty mb-4">
-                        <i class="bi bi-person"></i>
-                    </div>
-                {% endif %}
-
-                    <!-- Кнопка редактирования -->
-                    {% if user == request.user %}
-                    <div class="profile-edit-btn-container">
-                        <a href="{% url 'users:profile_settings' user.id %}" class="body-btn w-100">
-                            <i class="bi bi-gear"></i>
-                            Настройки профиля
-                        </a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Правая колонка: информация и статистика -->
-            <div class="col-12 col-md-8 profile-right">
-
-                <!-- Имя и роль -->
-                <h1 class="book-title mb-2">{{ user.username }}</h1>
-
-                <div class="profile-badge-container mb-4">
-                    {% if user.is_staff or user.is_superuser %}
-                        <span class="profile-badge admin">Администратор</span>
-                    {% else %}
-                        <span class="profile-badge user">Пользователь</span>
-                    {% endif %}
-                </div>
-
-                <!-- Контактная информация -->
-                <div class="profile-info mb-4">
-                    {% if user.date_joined %}
-                    <div class="profile-info-item">
-                        <i class="bi bi-calendar-event"></i>
-                        <span>Зарегистрирован: {{ user.date_joined|date:"d.m.Y" }}</span>
-                    </div>
-                    {% endif %}
-
-                    <div class="profile-info-item">
-                        <i class="bi bi-envelope"></i>
-                        <span>E-mail: {{ user.email }}</span>
+                        {% if user == request.user %}
+                            <div class="profile-edit-btn-container">
+                                <a href="{% url 'users:profile_settings' user.id %}" class="body-btn w-100">
+                                    <i class="bi bi-gear"></i> Настройки
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
-                <!-- Квадратные кнопки статистики -->
-                <div class="profile-square-stats">
-                    <div class="square-stat-item">
-                        <a href="{% url "users:saved_books" user.id %}" class="square-stat-link">
+                <!-- Правая колонка: Инфо (теперь без сдвига влево) -->
+                <div class="col-12 col-md-8 text-center text-md-start">
+                    <h1 class="book-title mb-2">{{ user.username }}</h1>
+
+                    <!-- Роль (восстановлено) -->
+                    <div class="profile-badge-container mb-3">
+                        {% if user.is_staff or user.is_superuser %}
+                            <span class="profile-badge admin">Администратор</span>
+                        {% else %}
+                            <span class="profile-badge user">Пользователь</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Контакты (восстановлено) -->
+                    <div class="profile-info mb-4 mx-auto mx-md-0" style="max-width: 400px;">
+                        {% if user.date_joined %}
+                        <div class="profile-info-item">
+                            <i class="bi bi-calendar-event"></i>
+                            <span>Зарегистрирован: {{ user.date_joined|date:"d.m.Y" }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="profile-info-item">
+                            <i class="bi bi-envelope"></i>
+                            <span>E-mail: {{ user.email }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Статистика -->
+                    <div class="profile-square-stats d-flex flex-wrap justify-content-center justify-content-md-start gap-3">
+                        <a href="{% url 'users:saved_books' user.id %}" class="square-stat-link">
                             <div class="square-stat-number">{{ user.saved_books.count }}</div>
-                            <div class="square-stat-label">
-                                Закладки
-                            </div>
+                            <div class="square-stat-label">Закладки</div>
                         </a>
-                    </div>
-
-                    <div class="square-stat-item">
-                        <a href="{% url "users:read_books" user.id %}" class="square-stat-link">
+                        <a href="{% url 'users:read_books' user.id %}" class="square-stat-link">
                             <div class="square-stat-number">{{ user.read_books.count }}</div>
-                            <div class="square-stat-label">
-                                Прочитано
-                            </div>
+                            <div class="square-stat-label">Прочитано</div>
                         </a>
-                    </div>
-
-                    <div class="square-stat-item">
-                        <a href="{% url "users:rated_books" user.id %}" class="square-stat-link">
+                        <a href="{% url 'users:rated_books' user.id %}" class="square-stat-link">
                             <div class="square-stat-number">{{ user.rated_books.count }}</div>
-                            <div class="square-stat-label">
-                                Оценки
-                            </div>
+                            <div class="square-stat-label">Оценки</div>
                         </a>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}

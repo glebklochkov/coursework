@@ -153,10 +153,10 @@ section p:not(.feature-card p) {
     color: #250f00 !important;
 }
 
-.feature-card h5, .square-stat-number {
-    color: #250f00 !important;
-    font-size: 1.2rem;
-}
+/*.feature-card h5, .square-stat-number {*/
+/*    color: #250f00 !important;*/
+/*    font-size: 1.2rem;*/
+/*}*/
 
 .feature-card p,
 .feature-card .text-muted,
@@ -1141,39 +1141,126 @@ main {
     color: #ffffff; /* Белый при наведении */
 }
 
-/* Адаптивность */
+/* ===== Адаптивность для мобильных устройств (планшеты и смартфоны) ===== */
 @media (max-width: 768px) {
-    .profile-square-stats {
-        gap: 1.5rem;
+
+    /* 1. Исправляем поиск и шапку */
+    .search-field {
+        width: 100% !important; /* Поиск теперь тянется на всю ширину */
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .navbar .d-flex {
+        flex-wrap: wrap; /* Кнопки входа/выхода будут переноситься, если не влезают */
         justify-content: center;
+        gap: 5px;
     }
 
-    .square-stat-link {
-        width: 100px;
-        height: 100px;
+    /* 2. Исправляем страницу книги (Detail View) */
+    .book-detail .col-12.col-md-8 {
+        padding-left: 0.75rem !important; /* Убираем огромный отступ слева */
+        text-align: center; /* Центрируем текст для лучшего вида на мобилках */
     }
 
-    .square-stat-number {
-        font-size: 1.8rem;
+    .book-poster, .book-poster-empty {
+        width: 100% !important;
+        max-width: 250px; /* Уменьшаем постер, чтобы он не был огромным */
+        height: auto !important;
+        aspect-ratio: 2 / 3; /* Сохраняем пропорции */
+        margin-bottom: 20px;
     }
 
-    .square-stat-label {
-        font-size: 0.8rem;
+    .book-author {
+        justify-content: center; /* Центрируем автора */
     }
+
+    /* 3. Исправляем рейтинг и кнопки действий */
+    .rating-wrapper {
+        margin-left: 0 !important; /* Убираем отступ в 3rem */
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .book-action-btn {
+        width: 100% !important; /* Кнопки "В закладки" и "Прочитано" на всю ширину */
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        height: auto !important;
+        min-height: auto !important;
+        margin-bottom: 15px;
+    }
+
+    /* Обложка с фиксированным соотношением сторон */
+    .card img.card-img-top,
+    .card-poster-empty {
+        height: auto !important;
+        aspect-ratio: 2 / 3;
+        object-fit: cover !important;
+    }
+
+    /* Заголовок: строго в одну строку с многоточием */
+    .card-title a {
+        font-size: 0.95rem !important;
+        white-space: nowrap !important;      /* Запрещаем перенос строки */
+        overflow: hidden !important;         /* Скрываем текст, вышедший за границы */
+        text-overflow: ellipsis !important;  /* Добавляем многоточие[cite: 11] */
+        display: block !important;
+    }
+
+    /* Автор и год: также в одну строку, чтобы не ломать высоту */
+    .card-text {
+        font-size: 0.8rem !important;
+        margin-bottom: 1px !important;
+        white-space: nowrap !important;      /*[cite: 11] */
+        overflow: hidden !important;         /*[cite: 11] */
+        text-overflow: ellipsis !important;  /*[cite: 11] */
+    }
+
+    .card-body {
+        padding: 8px !important;
+    }
+
 }
 
-@media (max-width: 576px) {
+/* Убираем старый сдвиг */
+.profile-page .profile-right {
+    margin-left: 0 !important;
+}
+
+/* Центрируем блоки инфо на мобилках */
+@media (max-width: 767px) {
+    .profile-info {
+        display: inline-block;
+        text-align: left;
+        width: 100%;
+    }
+    .profile-info-item {
+        justify-content: center;
+    }
     .profile-square-stats {
-        gap: 1rem;
+        margin-top: 20px;
+    }
+    /* Чтобы карточки в статистике не слипались */
+    .square-stat-link {
+        width: 100px !important;
+        height: 90px !important;
+    }
+
+}
+
+/* Совсем маленькие экраны (смартфоны) */
+@media (max-width: 480px) {
+    .book-title {
+        font-size: 1.5rem; /* Уменьшаем размер шрифта заголовка */
     }
 
     .square-stat-link {
-        width: 90px;
-        height: 90px;
-    }
-
-    .square-stat-number {
-        font-size: 1.5rem;
+        width: 100% !important; /* Статистика в профиле в столбик */
+        height: 80px;
     }
 }
 

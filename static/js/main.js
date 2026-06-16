@@ -8,28 +8,36 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.addEventListener("click", async function () {
         let nextPage = btn.dataset.next;
 
-        // Берём текущий URL и меняем/добавляем только page
+        // Берём текущий URL и меняем/добавляем только параметр page
         const url = new URL(window.location.href);
         url.searchParams.set('page', nextPage);
 
-        const response = await fetch(url.toString());
-        const html = await response.text();
+        try {
+            const response = await fetch(url.toString());
+            const html = await response.text();
 
-        // создаём временный DOM
-        const doc = new DOMParser().parseFromString(html, "text/html");
+            // Создаём временный DOM для парсинга
+            const doc = new DOMParser().parseFromString(html, "text/html");
 
-        // вытаскиваем новые карточки
-        const newItems = doc.querySelectorAll("#books-container .col-md-6");
+            // ИСПРАВЛЕНО: берем всех прямых потомков-дивов из контейнера
+            // Это сработает для любых классов сетки (col-6, col-md-4 и т.д.)
+            const newItems = doc.querySelectorAll("#books-container > div");
 
-        newItems.forEach(el => container.appendChild(el));
+            if (newItems.length > 0) {
+                newItems.forEach(el => container.appendChild(el));
+            }
 
-        // обновляем кнопку
-        const newButton = doc.querySelector("#load-more");
+            // Обновляем состояние кнопки
+            const newButton = doc.querySelector("#load-more");
 
-        if (newButton) {
-            btn.dataset.next = newButton.dataset.next;
-        } else {
-            btn.remove();
+            if (newButton) {
+                btn.dataset.next = newButton.dataset.next;
+            } else {
+                // Если следующей страницы нет — удаляем кнопку
+                btn.remove();
+            }
+        } catch (error) {
+            console.error("Ошибка при подгрузке книг:", error);
         }
     });
 });

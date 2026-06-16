@@ -75,7 +75,6 @@ def recommend_books(user, sort="score", direction="desc", min_score=1.1):
     if not result:
         return Book.objects.none()
 
-    # ← Здесь применяем сортировку по переданным параметрам
     reverse = direction == "desc"
 
     if sort == "score":
