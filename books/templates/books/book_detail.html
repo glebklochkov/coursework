@@ -1,0 +1,149 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}
+{{ book.title }}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center book-detail">
+<div class="col-12 col-md-10 col-lg-10">
+<div class="row g-4 book-detail">
+
+    <!-- Левая колонка: обложка -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="book-poster">
+            {% if book.poster %}
+                <img src="{{ book.poster.url }}"
+                     alt="{{ book.title }}"
+                     class="book-detail-img"
+                     onerror="this.onerror=null; handleImageError(this);">
+
+                <div class="book-poster-empty mb-4 d-none fallback-poster">
+                    <i class="bi bi-book"></i>
+                </div>
+            {% else %}
+                <div class="book-poster-empty mb-4">
+                    <i class="bi bi-book"></i>
+                </div>
+            {% endif %}
+        </div>
+        {% if user.is_authenticated %}
+        <div class="rating-wrapper">
+            <div class="rating"
+                 data-book-id="{{ book.id }}"
+                 data-user-rating="{{ user_rating|default:0 }}">
+                {% for i in "12345" %}
+                    <i class="bi bi-star rating-star"
+                       data-value="{{ forloop.counter }}"></i>
+                {% endfor %}
+            </div>
+            <div class="user-rating">
+                Ваша оценка:
+                <span id="user-rating">
+                    {% if user_rating %}{{ user_rating }}{% else %}—{% endif %}
+                </span>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if request.user.is_staff %}
+        <div class="profile-edit-btn-container">
+            <a href="{% url 'books:book_edit' book.id %}" class="body-btn">
+                <i class="bi bi-pencil-square me-2"></i>
+                Редактировать
+            </a>
+            <a href="{% url 'books:book_delete' book.id %}" class="body-btn">
+                <i class="bi bi-trash"></i>
+                Удалить
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Правая колонка: информация -->
+    <div class="col-12 col-md-8 col-lg-9">
+
+        <!-- Название -->
+        <h1 class="book-title">{{ book.title }}</h1>
+
+        <!-- Автор -->
+        <p class="book-author">
+            <a href="{% url 'books:author' book.author.id %}">{{ book.author.fullname }}</a>
+        </p>
+
+        <!-- Год и жанры -->
+        <div class="profile-info mb-4">
+            <div class="profile-info-item profile-info-row">
+                <div class="profile-info-left">
+                    <i class="bi bi-calendar-event"></i>
+                    {% if book.release_year %}
+                        <span>Год выхода: <strong>{{ book.release_year }}</strong></span>
+                    {% else %}
+                        <span>Год выхода: неизвестен</span>
+                    {% endif %}
+                </div>
+
+                <div class="profile-info-rating">
+                <i class="bi bi-star"></i>
+                    {% if book.ratings_count %}
+                        <span class="rating-value">
+                            Рейтинг: <strong>{{ book.average_rating|floatformat:1 }}
+                            ({{ book.ratings_count }})</strong>
+                        </span>
+                    {% else %}
+                        <span class="rating-empty">Рейтинг: нет оценок</span>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="profile-info-item">
+                <div class="profile-info-left">
+                <i class="bi bi-feather"></i>
+                <span>Жанры:
+                    {% for genre in book.genres.all %}
+                    <a href="{% url 'books:genre' genre.slug %}" class="book-genre">{{ genre.genre }}</a>
+                    {% if not forloop.last %} {% endif %}
+                {% endfor %}
+                </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="book-actions mb-3">
+            <button class="book-action-btn js-toggle {% if is_saved %}active{% endif %}"
+                    data-book="{{ book.id }}"
+                    data-url="{% url 'books:toggle_saved' book.id %}">
+                <i class="bi {% if is_saved %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
+                <span class="text-off">В закладки</span>
+                <span class="text-on">В закладках</span>
+            </button>
+
+            <button class="book-action-btn js-toggle {% if is_read %}active{% endif %}"
+                    data-book="{{ book.id }}"
+                    data-url="{% url 'books:toggle_read' book.id %}">
+                <i class="bi {% if is_read %}bi-eye-fill{% else %}bi-eye{% endif %}"></i>
+                <span class="text-off">Не прочитано</span>
+                <span class="text-on">Прочитано</span>
+            </button>
+        </div>
+
+        <!-- Описание -->
+        <div class="book-description">
+            <h5>Описание</h5>
+            {% if book.description %}
+            <p>{{ book.description }}</p>
+            {% else %}
+            <p>Нет описания</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+<script src="{% static "js/main.js" %}"></script>
+{% endblock %}

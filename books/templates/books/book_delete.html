@@ -1,0 +1,37 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}
+Удаление {{ book.title }}
+{% endblock %}
+
+{% block content %}
+{% if request.user.is_staff %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <h2>Удаление</h2>
+        <p>Вы точно хотите удалить книгу <strong>{{ book.title }}?</strong></p>
+        <div class="d-flex main-buttons">
+            <button type="submit" class="main-btn">
+                Удалить
+            </button>
+            <button type="button" class="main-btn" onclick="window.location.href='{% url 'books:detail' book.id %}'">
+                Отмена
+            </button>
+        </div>
+    </form>
+</div>
+{% else %}
+<div class="auth-container">
+    <form method="get" class="auth-form">
+        {% csrf_token %}
+        <h2>Ошибка</h2>
+        <p>Для удаления книги необходимо обладать правами администратора</p>
+        <div class="d-flex main-buttons">
+            <a href="{% url 'books:detail' book.id %}" class="main-btn">Жаль :(</a>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

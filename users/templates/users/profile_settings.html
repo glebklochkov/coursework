@@ -1,0 +1,123 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}
+Настройки {{ user.username }}
+{% endblock %}
+
+{% block content %}
+{% if request.user == user %}
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="profile-page">
+<div class="row justify-content-center book-detail">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="row g-4">
+
+            <!-- Левая колонка: аватар и кнопка -->
+            <div class="col-12 col-md-4">
+                <div class="profile-avatar-container">
+                {% if user.avatar %}
+                 <div class="profile-avatar mb-4">
+                    <img src="{{ user.avatar.url }}">
+                </div>
+                {% else %}
+                    <div class="profile-avatar-empty mb-4">
+                        <i class="bi bi-person"></i>
+                    </div>
+                {% endif %}
+                <label>
+                    {{ form.avatar }}
+                </label>
+
+                    <!-- Кнопка сохранения-->
+                     <div class="profile-edit-btn-container">
+                        <button type="submit" class="body-btn">
+                            <i class="bi bi-check-lg"></i>
+                            Сохранить
+                        </button>
+                        <button type="button" class="body-btn" onclick="window.location.href='{% url 'users:profile' user.id %}'">
+                            <i class="bi bi-x"></i>
+                            Отмена
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: информация и статистика -->
+            <div class="col-12 col-md-8 profile-right">
+
+                <!-- Имя и роль -->
+                <h1>{{ form.username }}</h1>
+
+                <div class="profile-badge-container mb-4">
+                    {% if user.is_staff or user.is_superuser %}
+                        <span class="profile-badge admin">Администратор</span>
+                    {% else %}
+                        <span class="profile-badge user">Пользователь</span>
+                    {% endif %}
+                </div>
+
+                <!-- Контактная информация -->
+                <div class="profile-info mb-4">
+                    {% if user.date_joined %}
+                    <div class="profile-info-item">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Зарегистрирован: {{ user.date_joined|date:"d.m.Y" }}</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="profile-info-item">
+                        <i class="bi bi-envelope"></i>
+                        <span>E-mail:</span>{{ form.email }}
+                    </div>
+                    <div class="profile-info-item">
+                        <i class="bi bi-key"></i>
+                        <span>Пароль: 
+                            <a href="{% url 'password_change' %}" class="book-genre" style="margin-left: 5px">Изменить пароль</a>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Квадратные кнопки статистики -->
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</form>
+{% else %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <h2>Ошибка</h2>
+        <p>Вы не можете редактировать данные другого пользователя</p>
+        <div class="d-flex main-buttons">
+            <a href="{% url 'users:profile' user.id %}" class="main-btn">Жаль :(</a>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+
+    // Автор — select с поиском
+    $('#id_author').select2({
+        width: '100%',
+        placeholder: "Выберите автора",
+        allowClear: true
+    });
+
+    // Жанры — мультивыбор с кликом, поиском и прокруткой
+    $('#id_genres').select2({
+        width: '100%',
+        placeholder: "Выберите жанры",
+        allowClear: true
+    });
+});
+</script>
+{% endblock %}

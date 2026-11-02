@@ -1,0 +1,1269 @@
+html {
+    overflow-y: scroll;
+}
+
+body {
+    background-color: #f5ebca;
+}
+
+.navbar {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+
+.navbar-brand i {
+    margin-right: 0.3rem; /* отступ справа от иконки */
+}
+
+/* Ссылки в контенте */
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #250f00;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: #ddb082;
+}
+
+.navbar .navbar-brand:hover span {
+    color: #ddb082; /* текст желтый при наведении */
+}
+
+.navbar .navbar-brand:hover i {
+    color: #ddb082; /* иконка тоже желтая при наведении */
+}
+
+.navbar-brand i,
+.navbar-brand span {
+    transition: color 0.2s ease;
+}
+
+/* Поле поиска */
+.search-field {
+    width: 500px; /* шире */
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+}
+
+.search-field:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.1rem #ddb082;
+    border-color: #ddb082;
+}
+
+
+/* Кнопки в header */
+.login-btn {
+    border-color: #fff;
+    color: #fff;
+    margin-left: 0.5rem;
+}
+
+.login-btn:hover {
+    background-color: transparent; /* без заливки */
+    border-color: #ddb082;
+}
+
+/* Кнопка "Выйти" */
+.logout-btn {
+    border-color: #fff;
+    color: #fff;
+    margin-left: 0.5rem;
+}
+
+.logout-btn:hover {
+    background-color: transparent; /* без заливки */
+    border-color: #ea7676;
+    color: #ea7676;
+}
+
+/*.sort-btn {*/
+/*    align-items: baseline;*/
+/*    border: 2px solid #684a33;*/
+/*    color: #684a33;*/
+/*    margin-top: 0.3rem;*/
+/*}*/
+
+/*.sort-btn:hover {*/
+/*    background-color: transparent; !* без заливки *!*/
+/*    border-color: #250f00;*/
+/*    color: #250f00;*/
+/*}*/
+
+/*=== Главная страница ===*/
+.main-page-img {
+    width: 130px;         /* Отрегулируйте ширину под ваш PNG */
+    height: auto;        /* Сохраняет пропорции */
+    display: block;      /* Чтобы работало центрирование */
+    margin: 0 auto;      /* Центрируем картинку */
+    margin-top: -3rem;
+}
+
+/* Стили для карточек функций на главной */
+.feature-card {
+    border: 2px solid #250f00 !important; /* Исправлена ошибка с точкой с запятой */
+    /*background-color: transparent !important;*/
+    transition: none !important;
+    /*box-shadow: none !important; !* Убираем тень по умолчанию *!*/
+}
+
+.feature-card .card-body > i.bi {
+    color: #250f00 !important;
+    display: inline-block;
+    margin-bottom: 5px; /* Немного опустим саму иконку */
+}
+
+/* 3. Убираем отступ у заголовка, чтобы поднять его выше к иконке */
+.custom-card-title {
+    margin-top: 0.2rem !important; /* Минимальный отступ сверху */
+    margin-bottom: 0.5rem;
+}
+
+.lead,
+section p:not(.feature-card p) {
+    color: #000000 !important;
+    font-family: 'Arial', sans-serif; /* Более толстые и широкие буквы */
+    font-size: 1.2rem;   /* Увеличили размер */
+    font-weight: 500;    /* Сделали чуть плотнее */
+    line-height: 1.7;
+}
+
+/* Отключаем любые эффекты при наведении для этих карточек */
+.feature-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: #250f00 !important;
+}
+
+.feature-card h1, h2 {
+    color: #250f00 !important;
+    margin-top: -1.5rem;
+}
+
+.feature-card h3, h4 i {
+    color: #250f00 !important;
+}
+
+/*.feature-card h5, .square-stat-number {*/
+/*    color: #250f00 !important;*/
+/*    font-size: 1.2rem;*/
+/*}*/
+
+.feature-card p,
+.feature-card .text-muted,
+.lead,
+section p {
+    color: #000000 !important;
+    /*opacity: 1 !important; !* Убираем прозрачность, если была *!*/
+    font-size: 1.05rem; /* Делаем текст чуть крупнее для выразительности */
+    /*line-height: 1.6;*/
+}
+
+/* Мотивационный текст (цитата) */
+.fancy-text {
+    font-style: italic;
+    color: #000000 !important; /* Текст цитаты тоже черный */
+    position: relative;
+    display: inline-block;
+    padding: 0 30px;
+    font-size: 1.25rem;
+}
+
+
+
+/* Дополнительная настройка для кнопки на главной */
+.main-btn.fs-5 {
+    width: auto; /* Чтобы кнопка не растягивалась на весь экран */
+    min-width: 250px;
+    box-shadow: 0 4px 15px rgba(37, 15, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+/* Если в карточках есть вспомогательный текст с классом text-muted,
+   сделаем его чуть прозрачным белым для красоты */
+.feature-card .text-muted {
+    opacity: 0.8;
+}
+
+/* каточки книг */
+.card {
+    border-radius: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 450px; /* фиксированная высота карточки */
+    transition: 0.3s ease;
+}
+
+/* Блок текста на карточке */
+.card-body {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 0.75rem;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card img.card-img-top {
+    width: 100%;
+    height: 275px;
+    object-fit: cover;
+    border-radius: 0.7rem;
+}
+
+.card-poster-empty {
+    width: 100%;
+    height: 275px;
+    border-radius: 0.7rem;
+    background-color: rgb(170, 129, 91);
+    color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*box-shadow: 0 5px 15px rgba(0,0,0,0.1);*/
+}
+
+.card-poster-empty i {
+    font-size: 6rem;
+}
+
+
+.card-title a {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-text {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 0.1rem; /* поднимаем год к автору */
+}
+
+.card-text.text-muted {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 0; /* подняли выше к автору */
+}
+
+/* Контейнер списка сортировок */
+ul.list-group {
+    width: 100%;                /* занимает всю ширину правого блока */
+}
+
+/* Каждая кнопка сортировки */
+.sort-btn {
+    list-style: none;           /* убираем маркер списка, если нужно */
+    margin: 0.3rem 0;           /* вертикальный отступ между кнопками */
+    padding: 0;
+    width: 100%;                /* !!! заставляем каждую li занимать всю ширину */
+}
+
+/* Ссылка внутри кнопки */
+.sort-btn a {
+    display: flex;              /* flex → легко управлять выравниванием */
+    justify-content: space-between;  /* текст слева, иконка справа */
+    align-items: center;        /* вертикально по центру */
+    width: 70%;                /* растягиваем ссылку на всю ширину li */
+    padding: 0.5rem 1rem;       /* комфортные внутренние отступы */
+    border: 2px solid #250f00;
+    border-radius: 0.4rem;      /* можно оставить или убрать */
+    color: #250f00;
+    text-decoration: none;
+    background: transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;        /* текст в одну строку */
+}
+
+/* Наведение */
+.sort-btn a:hover {
+    background-color: transparent;
+    border-color: #684a33;
+    color: #684a33;
+}
+
+/* Иконка (если есть) */
+.sort-btn a i {
+    margin-left: 0.75rem;       /* расстояние между текстом и стрелкой */
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+/* ФИЛЬТРЫ */
+
+/* Универсальный контейнер с прокруткой для множественных чекбоксов */
+.filter-scroll-container {
+    max-height: 205px;              /* ← основной параметр — подбери под дизайн */
+    overflow-y: auto;
+    border: 1px solid #d0c0a0;     /* или #ccc / #b8a489 — под твой стиль */
+    border-radius: 6px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    scrollbar-width: thin;          /* firefox */
+}
+
+/* Для WebKit-браузеров (Chrome, Safari, Edge) */
+.filter-scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+.filter-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.filter-scroll-container::-webkit-scrollbar-thumb {
+    background: #b8a489;
+    border-radius: 3px;
+}
+
+/* Чекбоксы в колонку, аккуратные отступы */
+.checkboxselectmultiple {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.checkboxselectmultiple label {
+    margin: 0;
+    padding: 4px 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
+
+/* Поле поиска внутри фильтра */
+.filter-search-input {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+/* Подсветка при фокусе */
+.filter-search-input:focus {
+    border-color: #b8a489;
+    box-shadow: 0 0 0 2px rgba(184, 164, 137, 0.25);
+}
+
+/* Группа фильтра */
+.filter-group {
+    position: relative;
+}
+
+/* ===== Страница книги ===== */
+.profile-info-item {
+    font-size: 1rem;
+}
+
+.book-detail .col-12.col-md-8 {
+    padding-left: 3.5rem; /* отступ слева от постера */
+}
+
+.book-poster {
+    width: 300px;      /* фиксированная ширина */
+    height: 425px;     /* фиксированная высота */
+    border-radius: 1rem;
+    background-color: #f2f2f2; /* placeholder */
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 0 auto;
+}
+
+.book-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* чтобы картинка не растягивалась */
+}
+
+.book-poster-empty {
+    width: 300px;      /* фиксированная ширина */
+    height: 425px;     /* фиксированная высота */
+    border-radius: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgb(170, 129, 91); /* placeholder */
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.book-poster-empty i {
+    font-size: 10rem;
+}
+
+.book-detail {
+    margin-top: 2px;
+}
+
+/* Обложка */
+.book-poster img {
+    width: 100%;
+    border-radius: 0.7rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* Название */
+.book-title {
+    color: #000;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+/* Автор */
+.book-author {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.book-author a {
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    border-radius: 0.4rem;
+    background-color: #250f00;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.book-author a:hover {
+    color: #fff;
+    background-color: #684a33;
+}
+
+/* Кнопки действий книги */
+.book-action-btn {
+    display: inline-block;
+    margin-right: 0.4rem;
+    margin-bottom: 0.1rem;
+    padding: 0.25rem 0.6rem;
+    background-color: transparent;
+    border: 2px solid #250f00;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    color: #250f00;
+    transition: all 0.3s ease;
+    width: 160px;
+}
+
+/* Иконки */
+.book-action-btn i {
+    font-size: 1.2rem;
+    transition: color 0.2s ease;
+}
+
+/* Скрываем текст "включено" по умолчанию */
+.book-action-btn .text-on {
+    display: none;
+}
+
+/* Наведение */
+.book-action-btn:hover {
+    color: #250f00;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Активное состояние */
+/*.book-action-btn.active,*/
+.book-action-btn.active i {
+    color: #250f00;
+}
+
+/* Меняем текст */
+.book-action-btn.active .text-off {
+    display: none;
+}
+
+.book-action-btn.active .text-on {
+    display: inline;
+}
+
+/* рейтинг*/
+.rating {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem;
+    gap: 1rem;
+    cursor: pointer;
+    color: #bbb;
+}
+.rating-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 3rem;
+    margin-top: 10px;
+    gap: 6px;
+}
+
+.user-rating {
+    margin-top: -8px;
+    color: #000;
+    font-size: 1.5rem;
+}
+
+.rating i{
+    color: #250f00;
+    transition: all 0.3s ease;
+}
+
+
+.rating-star:hover,
+.rating-star ~ .rating-star:hover {
+    color: #684a33;
+}
+
+/* Год и жанры */
+
+.profile-info-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.profile-info-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-info-rating {
+    white-space: nowrap;
+    margin-left: 24px;
+}
+
+.book-genre {
+    display: inline-block;
+    margin-right: 0.1rem;
+    margin-bottom: 0.4rem;
+    padding: 0.25rem 0.6rem;
+    background-color: transparent;
+    border: 2px solid #684a33;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    color: #684a33;
+    transition: all 0.3s ease;
+}
+
+.book-genre:hover {
+    color: #fff;
+    background-color: #684a33;
+    border: 2px solid #684a33;
+}
+
+/* Описание */
+.book-description {
+    background: #fffaf0;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid #b8a489;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.08);
+    color: #000;
+}
+
+.book-description h5 {
+    margin-bottom: 0.5rem;
+}
+
+.book-description p {
+    line-height: 1.6;
+}
+
+/* ===== Редактирование книги ===== */
+.book-title-input {
+    border: 2px solid #250f00;
+    font-size: 2rem;
+    font-weight: 700;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+}
+
+.book-title-input:focus {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    border: 2px solid #b8a489;
+}
+
+.email-input {
+    border: 2px solid #250f00;
+    font-size: 1rem;
+    padding: 0;
+    background: transparent;
+    width: 100%;
+}
+
+.email-input:focus {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    border: 2px solid #b8a489;
+}
+
+.profile-info-item span {
+    white-space: normal;
+}
+
+.author-select {
+    border: 2px solid #250f00;
+    background: transparent;
+}
+
+.author-select:focus {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+    border: 2px solid #b8a489;
+}
+
+.year-input {
+    border: 2px solid #250f00;
+    width: 100%;
+    max-width: 90px;
+    background: transparent;
+    font-weight: 600;
+}
+
+.year-input:focus {
+    box-shadow: none;
+    outline: none;
+    border: 2px solid #b8a489;
+    background: transparent;
+}
+
+.genres-select {
+    border: 2px solid #250f00;
+    border-radius: 2px;
+}
+
+.genres-select:focus{
+    border: 2px solid #b8a489;
+    box-shadow: none;
+    outline: none;
+}
+
+.description-input {
+    border: 2px solid #250f00;
+    padding: 18px;
+    resize: none;
+}
+
+.description-input:focus {
+    border: 2px solid #b8a489;
+    box-shadow: none;
+    outline: none;
+}
+
+.edit-line {
+    display: flex;
+    align-items: center;
+    /*gap: 8px;*/
+
+}
+
+.edit-line span {
+    font-weight: 600;
+}
+
+/* Поле select2 — как обычный input у тебя */
+.select2-container .select2-selection--single,
+.select2-container .select2-selection--multiple {
+    background: transparent !important;
+    border: 2px solid #250f00 !important;   /* тот же коричневый */
+}
+
+/* Текст в поле */
+.select2-container--default .select2-selection__rendered {
+    color: #250f00 !important;
+}
+
+/* Стрелка */
+.select2-container--default .select2-selection__arrow b {
+    border-color: #250f00 transparent transparent transparent;
+}
+
+/* Фокус */
+.select2-container--default.select2-container--focus
+.select2-selection--single,
+.select2-container--default.select2-container--focus
+.select2-selection--multiple {
+    border-color: #b8a489 !important;
+    box-shadow: none;
+}
+
+/* Выпадающее меню */
+.select2-dropdown {
+    background: #fff;
+    border: 2px solid #250f00;
+}
+
+/* Поиск */
+.select2-search input {
+    background: transparent;
+    border: 2px solid #250f00;
+    color: #684a33;
+}
+
+/* Обычные элементы списка */
+.select2-results__option {
+    color: #000;
+}
+
+/* Наведённый элемент – коричневый */
+.select2-results__option--highlighted {
+    background: #b8a489 !important;
+    color: #fff !important;
+}
+
+/* Выбранный элемент */
+.select2-results__option--selected {
+    background: #684a33 !important;
+    color: #fff !important;
+}
+
+ /* ==== Вход и регистрация ==== */
+/* Центровка формы на странице */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh; /* почти вся высота экрана */
+    background-color: #f5ebca;
+    padding: 1rem;
+}
+
+/* Блок самой формы */
+.auth-form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Заголовок формы */
+.auth-form h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    color: #250f00;
+}
+
+.auth-form h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: normal;
+}
+
+/* Поля ввода */
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #250f00;
+    border-radius: 0.4rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #000;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Фокус поля */
+.auth-form input:focus {
+    outline: none;
+    border-color: #ddb082;
+    box-shadow: 0 0 0 0.1rem #ddb082;
+    background: rgba(255,255,255,0.15);
+}
+
+/* Кнопки */
+.auth-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #250f00;
+    border: none;
+    border-radius: 0.5rem;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 1rem;
+}
+
+/* Наведение на кнопки */
+.auth-form button:hover {
+    background-color: #684a33;
+}
+
+.main-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;          /* расстояние между кнопками */
+    margin-top: 15px;
+}
+
+.main-btn {
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    padding: 0.55rem 1.2rem;
+    background-color: #250f00;
+    border-radius: 0.5rem;
+    color: #fff;
+    font-size: 0.9rem;  /* немного меньше */
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.main-btn:hover {
+    background-color: #684a33;
+    color: #fff;
+}
+
+/* Мелкий текст для пароля */
+.auth-form .helptext {
+    font-size: 0.75rem;
+    color: #555;
+    margin-top: -0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Скрываем help_text для username */
+.auth-form .username-helptext {
+    display: none;
+}
+
+.auth-input::placeholder {
+    color: #555;
+    font-style: italic;
+}
+
+.body-btn {
+    border: 2px solid #250f00;     /* коричневая обводка */
+    color: #250f00;                 /* коричневый текст */
+    background: transparent;
+    border-radius: 8px;           /* слегка скруглённые углы */
+    padding: 6px 12px;            /* уменьшенный размер кнопки */
+    font-size: 0.9rem;            /* чуть меньше стандартного текста */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 0.2rem;
+}
+
+/* при наведении */
+.body-btn:hover {
+    background-color: #684a33;    /* заливка при наведении */
+    /*border: 2px solid #684a33;*/
+    color: #fff;
+}
+
+.body-btn:focus {
+    outline: none;       /* убирает стандартный outline */
+    box-shadow: 0 0 0 3px rgba(120, 75, 17, 0.3);
+}
+
+/* ===  ПРОФИЛЬ === */
+
+.profile-avatar-container {
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 200px;      /* фиксированная ширина */
+    height: 200px;     /* фиксированная высота */
+    border-radius: 1rem;
+    background-color: #f2f2f2; /* placeholder */
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin: 0 auto;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* чтобы картинка не растягивалась */
+}
+
+/* Квадратный аватар с закругленными углами */
+.profile-avatar-empty {
+    width: 200px;
+    height: 200px;
+    background-color: #684a33;
+    color: white;
+    border-radius: 1rem; /* Закругленные углы */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.profile-avatar-empty i {
+    font-size: 5rem;
+}
+
+/* Кнопка под аватаром */
+.profile-edit-btn-container {
+    display: flex;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+}
+
+.profile-edit-btn-container .body-btn{
+    display: inline-flex;     /* чтобы кнопка вела себя как инлайн-элемент */
+    align-items: center;      /* выровнять иконку и текст по центру */
+    gap: 6px;                 /* расстояние между иконкой и текстом */
+}
+
+.profile-page .profile-right {
+    margin-left: -60px; /* подбирай -8px / -10px / -14px */
+}
+
+.profile-page .profile-info,
+.profile-page .profile-info span {
+    font-size: 1rem;
+}
+
+/* Бейджи */
+.profile-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 400; /* Более тонкий шрифт */
+    letter-spacing: 0.3px;
+}
+
+.profile-badge.admin {
+    background-color: #871414;
+    color: white;
+}
+
+.profile-badge.user {
+    background-color: #684a33;
+    color: white;
+}
+
+/* Информация профиля */
+.profile-page {
+    margin-top: 20px;
+}
+
+.profile-info {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1.2rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.profile-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
+}
+
+.profile-info-item:last-child {
+    margin-bottom: 0;
+}
+
+.profile-info-item i {
+    color: #250f00;
+    font-size: 1.1rem;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.profile-info-item span {
+    color: #250f00;
+}
+
+/* Квадратные кнопки статистики */
+.profile-square-stats {
+    display: flex;
+    gap: 2rem; /* Большее расстояние между кнопками */
+    margin-top: 1rem;
+    justify-content: flex-start;
+}
+
+.square-stat-item {
+    flex: 0 0 auto;
+}
+
+.square-stat-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 100px;
+    background-color: transparent;
+    border: 2px solid #250f00;
+    border-radius: 1rem;
+    color: #250f00;
+    text-decoration: none;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.square-stat-link:hover {
+    background-color: #250f00;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.square-stat-number {
+    font-size: 2.2rem;
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    color: #250f00;
+}
+
+.square-stat-link:hover .square-stat-number {
+    color: white;
+}
+
+.square-stat-label {
+    font-size: 1.0rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.square-stat-label i {
+    font-size: 0.9rem;
+}
+
+/* === ФУТЕР === */
+/* Прижимаем футер к низу */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto; /* Растягивает контент, выталкивая футер вниз */
+}
+
+.main-footer {
+    flex-shrink: 0; /* Не дает футеру сжиматься */
+}
+
+.main-footer {
+    background-color: #250f00;
+    color: #f5ebca;
+    height: 140px;            /* Уменьшили высоту со 150px */
+    display: flex;
+    flex-direction: column;   /* Позволяет элементам встать друг под друга */
+    align-items: center;
+    justify-content: center;
+    border-top: 2px solid #684a33;
+    padding: 1rem 0;          /* Добавили небольшой внутренний отступ */
+}
+
+.social-link {
+    color: #f5ebca;
+    text-decoration: none;
+    margin: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;  /* Центрируем SVG внутри ссылки */
+    vertical-align: middle;   /* Выравниваем ссылки по одной линии */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-link svg {
+    width: 36px;              /* Чуть уменьшили, чтобы не было громоздко */
+    height: 36px;
+    fill: currentColor;
+    display: block;           /* Убирает лишние отступы снизу */
+}
+
+/* Наведение для ВК и ТГ (можно добавить фирменные цвета) */
+.social-link:hover {
+    color: #ddb082;
+}
+
+
+.footer-divider {
+    color: #684a33;
+    margin: 0 8px;
+}
+
+.footer-links a {
+    color: #ddb082;
+    text-decoration: none;
+    font-size: 0.85rem;       /* Немного уменьшили шрифт для компактности */
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #ffffff; /* Белый при наведении */
+}
+
+/* ===== Адаптивность для мобильных устройств (планшеты и смартфоны) ===== */
+@media (max-width: 768px) {
+
+    /* 1. Исправляем поиск и шапку */
+    .search-field {
+        width: 100% !important; /* Поиск теперь тянется на всю ширину */
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .navbar .d-flex {
+        flex-wrap: wrap; /* Кнопки входа/выхода будут переноситься, если не влезают */
+        justify-content: center;
+        gap: 5px;
+    }
+
+    /* 2. Исправляем страницу книги (Detail View) */
+    .book-detail .col-12.col-md-8 {
+        padding-left: 0.75rem !important; /* Убираем огромный отступ слева */
+        text-align: center; /* Центрируем текст для лучшего вида на мобилках */
+    }
+
+    .book-poster, .book-poster-empty {
+        width: 100% !important;
+        max-width: 250px; /* Уменьшаем постер, чтобы он не был огромным */
+        height: auto !important;
+        aspect-ratio: 2 / 3; /* Сохраняем пропорции */
+        margin-bottom: 20px;
+    }
+
+    .book-author {
+        justify-content: center; /* Центрируем автора */
+    }
+
+    /* 3. Исправляем рейтинг и кнопки действий */
+    .rating-wrapper {
+        margin-left: 0 !important; /* Убираем отступ в 3rem */
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .book-action-btn {
+        width: 100% !important; /* Кнопки "В закладки" и "Прочитано" на всю ширину */
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        height: auto !important;
+        min-height: auto !important;
+        margin-bottom: 15px;
+    }
+
+    /* Обложка с фиксированным соотношением сторон */
+    .card img.card-img-top,
+    .card-poster-empty {
+        height: auto !important;
+        aspect-ratio: 2 / 3;
+        object-fit: cover !important;
+    }
+
+    /* Заголовок: строго в одну строку с многоточием */
+    .card-title a {
+        font-size: 0.95rem !important;
+        white-space: nowrap !important;      /* Запрещаем перенос строки */
+        overflow: hidden !important;         /* Скрываем текст, вышедший за границы */
+        text-overflow: ellipsis !important;  /* Добавляем многоточие[cite: 11] */
+        display: block !important;
+    }
+
+    /* Автор и год: также в одну строку, чтобы не ломать высоту */
+    .card-text {
+        font-size: 0.8rem !important;
+        margin-bottom: 1px !important;
+        white-space: nowrap !important;      /*[cite: 11] */
+        overflow: hidden !important;         /*[cite: 11] */
+        text-overflow: ellipsis !important;  /*[cite: 11] */
+    }
+
+    .card-body {
+        padding: 8px !important;
+    }
+
+}
+
+/* Убираем старый сдвиг */
+.profile-page .profile-right {
+    margin-left: 0 !important;
+}
+
+/* Центрируем блоки инфо на мобилках */
+@media (max-width: 767px) {
+    .profile-info {
+        display: inline-block;
+        text-align: left;
+        width: 100%;
+    }
+    .profile-info-item {
+        justify-content: center;
+    }
+    .profile-square-stats {
+        margin-top: 20px;
+    }
+    /* Чтобы карточки в статистике не слипались */
+    .square-stat-link {
+        width: 100px !important;
+        height: 90px !important;
+    }
+
+}
+
+/* Совсем маленькие экраны (смартфоны) */
+@media (max-width: 480px) {
+    .book-title {
+        font-size: 1.5rem; /* Уменьшаем размер шрифта заголовка */
+    }
+
+    .square-stat-link {
+        width: 100% !important; /* Статистика в профиле в столбик */
+        height: 80px;
+    }
+}
+
+
+#search-results .dropdown-item { color: #250f00; transition: all 0.3s ease; }
+#search-results .dropdown-item:hover { color: #fff; background-color: #684a33; }
