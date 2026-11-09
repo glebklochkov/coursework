@@ -132,3 +132,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Выбор алгоритма рекомендаций:
+# 'neural_embeddings' — новый нейросетевой (Sentence Transformer + профиль пользователя)
+# 'content_based' — старый контентный (жанры/авторы)
+RECOMMENDER_ALGORITHM = 'neural_embeddings'
+
+# Настройки нейросетевого рекомендателя
+NEURAL_RECOMMENDER_EMBEDDINGS_DIR = BASE_DIR / 'embeddings'
+NEURAL_RECOMMENDER_NEGATIVE_WEIGHT = 1.0

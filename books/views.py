@@ -13,7 +13,8 @@ from django_filters.views import FilterView
 
 from books.forms import BookForm, AuthorForm, GenreForm
 from books.management.services.filters import BookFilter
-from books.management.services.recommendations import recommend_books
+from books.management.services.recommender_registry import get_recommender
+# from books.management.services.recommendations import recommend_books  # старый алгоритм (закомментирован)
 from books.models import Book, Author, Genre, BookRating
 from users.models import User
 
@@ -52,9 +53,21 @@ class BooksListView(FilterView):
         queryset = Book.objects.all()
 
         if self.request.resolver_match.url_name == 'recommendations':
-            sort = self.request.GET.get("sort", "score")
-            direction = self.request.GET.get("dir", "desc")
-            return recommend_books(self.request.user, sort=sort, direction=direction)
+            # Старый алгоритм (закомментирован):
+            # sort = self.request.GET.get("sort", "score")
+            # direction = self.request.GET.get("dir", "desc")
+            # return recommend_books(self.request.user, sort=sort, direction=direction)
+            
+            # Новый алгоритм через реестр (настраивается в settings.RECOMMENDER_ALGORITHM)
+            recommender = get_recommender()
+            books = recommender(self.request.user, top_n=1000)
+            # Преобразуем список в queryset для совместимости с FilterView
+            from django.db.models import Case, When, IntegerField
+            preserved = Case(
+                *[When(pk=pk, then=pos) for pos, pk in enumerate([b.pk for b in books])],
+                output_field=IntegerField()
+            )
+            return Book.objects.filter(pk__in=[b.pk for b in books]).order_by(preserved)
 
         # Поиск по q (глобальный поиск из шапки)
         q = self.request.GET.get('q')

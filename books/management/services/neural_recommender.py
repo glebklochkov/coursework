@@ -711,6 +711,16 @@ class NeuralContentRecommender:
                 f"(NaN или inf). Рекомендации невозможны."
             )
 
+        # --- Фильтрация: исключаем книги с неположительным score -------------
+        # Рекомендуем только книги со score > 0 (строго положительным сходством)
+        positive_mask = scores > 0.0
+        if not np.any(positive_mask):
+            return []
+        
+        scores = scores[positive_mask]
+        candidate_ids = [cid for cid, keep in zip(candidate_ids, positive_mask) if keep]
+        candidate_indices = [idx for idx, keep in zip(candidate_indices, positive_mask) if keep]
+
         # --- Детерминированная сортировка -------------------------------- #
         # Первичный ключ: убывание score. Вторичный: возрастание индекса эмбеддинга
         # (воспроизводимый порядок при равных score).
